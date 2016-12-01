@@ -5,6 +5,8 @@ class Agent():
         self.direction = 'N'
         self.x = 0
         self.y = 0
+        self.locations = set()
+        self.first_location_visited_twice = None
 
     def turn(self, dir):
         current_direction_index = Agent.directions.index(self.direction)
@@ -19,14 +21,19 @@ class Agent():
         self.direction = Agent.directions[new_direction_index]
 
     def walk(self, steps):
-        if self.direction == 'N':
-            self.y -= steps
-        elif self.direction == 'S':
-            self.y += steps
-        elif self.direction == 'E':
-            self.x += steps
-        elif self.direction == 'W':
-            self.x -= steps
+        for i in range(steps):
+            if self.direction == 'N':
+                self.y -= 1
+            elif self.direction == 'S':
+                self.y += 1
+            elif self.direction == 'E':
+                self.x += 1
+            elif self.direction == 'W':
+                self.x -= 1
+            location = (self.x, self.y)
+            if self.first_location_visited_twice == None and location in self.locations:
+                self.first_location_visited_twice = location
+            self.locations.add(location)
 
     def move(self, code):
         turn_direction = code[0]
@@ -40,6 +47,20 @@ class Agent():
 
     def distance(self):
         return abs(self.x) + abs(self.y)
+
+    def distance_to_first_location_visited_twice(self):
+        return abs(self.first_location_visited_twice[0]) + abs(self.first_location_visited_twice[1])
+
+
+def test_visited_twice_distance():
+    agent = Agent()
+    agent.walk(2)
+    assert (0, -1) in agent.locations
+    assert (0, -2) in agent.locations
+
+    agent = Agent()
+    agent.move_all(['R8', 'R4', 'R4', 'R8'])
+    assert agent.distance_to_first_location_visited_twice() == 4
 
 
 def test_move():
@@ -107,3 +128,4 @@ input_list = input_.split(', ')
 agent = Agent()
 agent.move_all(input_list)
 print(agent.distance())
+print(agent.distance_to_first_location_visited_twice())
