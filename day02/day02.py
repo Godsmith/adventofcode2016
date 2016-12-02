@@ -1,3 +1,31 @@
+class Coordinate:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+    def add(self, tuple_):
+        self.x += tuple_[0]
+        self.y += tuple_[1]
+
+    def restrict(self, size):
+        if self.x < 0: self.x = 0
+        if self.y < 0: self.y = 0
+        if self.x >= size: self.x = size - 1
+        if self.y >= size: self.y = size - 1
+
+
+class Keys:
+    def __init__(self, array):
+        self.array = array
+
+    def get_key(self, coordinate):
+        return self.array[coordinate.y][coordinate.x]
+
+    @property
+    def size(self):
+        return len(self.array)
+
+
 class Keypad:
     coordinates_from_direction = {'U': (0, -1),
                                   'R': (1, 0),
@@ -5,27 +33,25 @@ class Keypad:
                                   'L': (-1, 0)}
 
     def __init__(self):
-        self.coordinates = [1, 1]
+        self.coordinate = Coordinate(x=1, y=1)
 
     @property
     def keys(self):
-        return [['1', '2', '3'],
-                ['4', '5', '6'],
-                ['7', '8', '9']]
+        return Keys([['1', '2', '3'],
+                     ['4', '5', '6'],
+                     ['7', '8', '9']])
 
     @property
     def current_digit(self):
-        return self.keys[self.coordinates[1]][self.coordinates[0]]
+        return self.keys.get_key(self.coordinate)
 
     def move_finger(self, direction):
         coordinate_delta = Keypad.coordinates_from_direction[direction]
-        self.coordinates = self._add_lists(self.coordinates, coordinate_delta)
-        for i in [0, 1]:
-            self.coordinates[i] = max(0, self.coordinates[i])
-            self.coordinates[i] = min(len(self.keys) - 1, self.coordinates[i])
+        self.coordinate.add(coordinate_delta)
+        self.coordinate.restrict(self.keys.size)
         if self.current_digit is None:
             minus_delta = [-x for x in coordinate_delta]
-            self.coordinates = self._add_lists(self.coordinates, minus_delta)
+            self.coordinate.add(minus_delta)
 
     def move_all(self, sequence):
         for char in sequence:
@@ -42,15 +68,15 @@ class Keypad:
 class StarKeypad(Keypad):
     def __init__(self):
         super().__init__()
-        self.coordinates = [0, 2]
+        self.coordinate = Coordinate(x=0, y=2)
 
     @property
     def keys(self):
-        return [[None, None, '1', None, None],
-                [None, '2', '3', '4', None],
-                ['5', '6', '7', '8', '9'],
-                [None, 'A', 'B', 'C', None],
-                [None, None, 'D', None, None]]
+        return Keys([[None, None, '1', None, None],
+                     [None, '2', '3', '4', None],
+                     ['5', '6', '7', '8', '9'],
+                     [None, 'A', 'B', 'C', None],
+                     [None, None, 'D', None, None]])
 
 
 input_ = """RDRRDLRRUDRUUUULDDRDUULLDUULDURDDUDRULDLUDDRLRDUDDURRRRURDURLLRDRUUULDLLLURDRLLULLUULULLLDLLLRRURRLRDUULRURRUDRRDRLURLRURLLULRUURRUURDDLDRDLDLLUDUULLLUUUUDULLDRRUURLDURDDDDDRLLRRURDLUDRRUUDLRRLLRDURDUDDDLRDDRDLRULLUULRULRLLULDDRURUUDLDDULDRLLURDDUDDUDRDUDLDRRRDURRLDRDRLDLLDUDDDULULRRULRLLURDRRDDUUUUUULRUDLRRDURDLRDLUDLDURUDDUUURUDLUUULDLRDURDLDUUDLDDDURUUDUUDRLRDULLDUULUDRUDRLRRRDLLDRUDULRRUDDURLDRURRLLRRRDRLLDLULULRRUURRURLLUDRRLRULURLDDDDDURUDRRRRULLUUDLDDLUUL
