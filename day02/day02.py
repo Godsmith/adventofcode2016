@@ -9,9 +9,9 @@ class Keypad:
 
     @property
     def keys(self):
-        return [[1, 2, 3],
-                [4, 5, 6],
-                [7, 8, 9]]
+        return [['1', '2', '3'],
+                ['4', '5', '6'],
+                ['7', '8', '9']]
 
     @property
     def current_digit(self):
@@ -35,7 +35,7 @@ class Keypad:
         out = ''
         for sequence in sequences:
             self.move_all(sequence)
-            out += str(self.current_digit)
+            out += self.current_digit
         return out
 
     @staticmethod
