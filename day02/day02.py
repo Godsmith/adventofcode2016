@@ -1,8 +1,4 @@
 class Keypad:
-    keys = [[1, 2, 3],
-            [4, 5, 6],
-            [7, 8, 9]]
-
     coordinates_from_direction = {'U': (0, -1),
                                   'R': (1, 0),
                                   'D': (0, 1),
@@ -12,16 +8,24 @@ class Keypad:
         self.coordinates = [1, 1]
 
     @property
+    def keys(self):
+        return [[1, 2, 3],
+                [4, 5, 6],
+                [7, 8, 9]]
+
+    @property
     def current_digit(self):
-        return Keypad.keys[self.coordinates[1]][self.coordinates[0]]
+        return self.keys[self.coordinates[1]][self.coordinates[0]]
 
     def move_finger(self, direction):
         coordinate_delta = Keypad.coordinates_from_direction[direction]
-        new_coordinates = self._add_lists(self.coordinates, coordinate_delta)
+        self.coordinates = self._add_lists(self.coordinates, coordinate_delta)
+        self.bring_finger_inside()
+
+    def bring_finger_inside(self):
         for i in [0, 1]:
-            new_coordinates[i] = max(0, new_coordinates[i])
-            new_coordinates[i] = min(2, new_coordinates[i])
-        self.coordinates = new_coordinates
+            self.coordinates[i] = max(0, self.coordinates[i])
+            self.coordinates[i] = min(2, self.coordinates[i])
 
     def move_all(self, sequence):
         for char in sequence:
