@@ -1,7 +1,7 @@
-from day02 import Keypad
+from day02 import Keypad, StarKeypad
 
 
-class TestKeyboard:
+class TestKeypad:
     def test_add_tuples(self):
         assert Keypad._add_lists([1, 3], [2, 4]) == [3, 7]
 
@@ -40,3 +40,11 @@ class TestKeyboard:
     def test_to_code(self):
         keypad = Keypad()
         assert keypad.to_code(['ULL', 'RRDDD', 'LURDL', 'UUUUD']) == '1985'
+
+
+class TestStarKeypad:
+    def test_move(self):
+        keypad = StarKeypad()
+        keypad.move_finger('D')
+        keypad.move_finger('D')
+        assert keypad.current_digit == 'B'
