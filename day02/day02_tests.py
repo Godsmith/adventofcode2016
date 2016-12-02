@@ -45,6 +45,28 @@ class TestKeypad:
 class TestStarKeypad:
     def test_move(self):
         keypad = StarKeypad()
+        keypad.move_finger('R')
+        assert keypad.current_digit == '6'
+
+    def test_move_outside(self):
+        keypad = StarKeypad()
+        keypad.move_finger('L')
+        assert keypad.current_digit == '5'
+        keypad.move_finger('D')
+        assert keypad.current_digit == '5'
+        keypad.move_finger('U')
+        assert keypad.current_digit == '5'
+        keypad.move_finger('R')
+        keypad.move_finger('U')
+        keypad.move_finger('U')
+        assert keypad.current_digit == '2'
+        keypad.move_finger('R')
         keypad.move_finger('D')
         keypad.move_finger('D')
-        assert keypad.current_digit == 'B'
+        keypad.move_finger('D')
+        keypad.move_finger('D')
+        assert keypad.current_digit == 'D'
+
+    def test_to_code(self):
+        keypad = StarKeypad()
+        assert keypad.to_code(['ULL', 'RRDDD', 'LURDL', 'UUUUD']) == '5DB3'

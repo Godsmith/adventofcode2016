@@ -20,9 +20,9 @@ class Keypad:
     def move_finger(self, direction):
         coordinate_delta = Keypad.coordinates_from_direction[direction]
         self.coordinates = self._add_lists(self.coordinates, coordinate_delta)
-        self.bring_finger_inside()
+        self.bring_finger_inside(coordinate_delta)
 
-    def bring_finger_inside(self):
+    def bring_finger_inside(self, coordinate_delta):
         for i in [0, 1]:
             self.coordinates[i] = max(0, self.coordinates[i])
             self.coordinates[i] = min(2, self.coordinates[i])
@@ -44,6 +44,10 @@ class Keypad:
 
 
 class StarKeypad(Keypad):
+    def __init__(self):
+        super().__init__()
+        self.coordinates = [0, 2]
+
     @property
     def keys(self):
         return [[None, None, '1', None, None],
@@ -51,6 +55,16 @@ class StarKeypad(Keypad):
                 ['5', '6', '7', '8', '9'],
                 [None, 'A', 'B', 'C', None],
                 [None, None, 'D', None, None]]
+
+    def bring_finger_inside(self, coordinate_delta):
+        for i in [0, 1]:
+            self.coordinates[i] = max(0, self.coordinates[i])
+            self.coordinates[i] = min(4, self.coordinates[i])
+        if self.current_digit is None:
+            minus_delta = [-x for x in coordinate_delta]
+            self.coordinates = self._add_lists(self.coordinates, minus_delta)
+
+
 
 
 input_ = """RDRRDLRRUDRUUUULDDRDUULLDUULDURDDUDRULDLUDDRLRDUDDURRRRURDURLLRDRUUULDLLLURDRLLULLUULULLLDLLLRRURRLRDUULRURRUDRRDRLURLRURLLULRUURRUURDDLDRDLDLLUDUULLLUUUUDULLDRRUURLDURDDDDDRLLRRURDLUDRRUUDLRRLLRDURDUDDDLRDDRDLRULLUULRULRLLULDDRURUUDLDDULDRLLURDDUDDUDRDUDLDRRRDURRLDRDRLDLLDUDDDULULRRULRLLURDRRDDUUUUUULRUDLRRDURDLRDLUDLDURUDDUUURUDLUUULDLRDURDLDUUDLDDDURUUDUUDRLRDULLDUULUDRUDRLRRRDLLDRUDULRRUDDURLDRURRLLRRRDRLLDLULULRRUURRURLLUDRRLRULURLDDDDDURUDRRRRULLUUDLDDLUUL
@@ -61,4 +75,7 @@ LURLUURLURDUUDRUDLDLLURRRDLDRRRULDDRRDRDUUDRUDURDDDURLUDDLULUULRRLLRULUDRDDRRRLD
 
 sequences = input_.split('\n')
 keypad = Keypad()
+print(keypad.to_code(sequences))
+
+keypad = StarKeypad()
 print(keypad.to_code(sequences))
