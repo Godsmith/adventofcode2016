@@ -1,39 +1,29 @@
 class Agent():
     directions = ['N', 'E', 'S', 'W']
+    turn_to_direction = {'N': {'R': 'E', 'L': 'W'},
+                         'S': {'L': 'E', 'R': 'W'},
+                         'E': {'R': 'S', 'L': 'N'},
+                         'W': {'R': 'N', 'L': 'S'}}
+    walk_deltas = {'N': (0, -1),
+                   'S': (0, 1),
+                   'E': (1, 0),
+                   'W': (-1, 0)}
 
     def __init__(self):
         self.direction = 'N'
-        self.x = 0
-        self.y = 0
+        self.location = (0, 0)
         self.locations = set()
         self.first_location_visited_twice = None
 
     def turn(self, dir):
-        current_direction_index = Agent.directions.index(self.direction)
-        if dir == 'R':
-            new_direction_index = current_direction_index + 1
-        elif dir == 'L':
-            new_direction_index = current_direction_index - 1
-        else:
-            raise ValueError('Direction must be R or L')
-        if new_direction_index == 4:
-            new_direction_index = 0
-        self.direction = Agent.directions[new_direction_index]
+        self.direction = Agent.turn_to_direction[self.direction][dir]
 
     def walk(self, steps):
-        for i in range(steps):
-            if self.direction == 'N':
-                self.y -= 1
-            elif self.direction == 'S':
-                self.y += 1
-            elif self.direction == 'E':
-                self.x += 1
-            elif self.direction == 'W':
-                self.x -= 1
-            location = (self.x, self.y)
-            if self.first_location_visited_twice == None and location in self.locations:
-                self.first_location_visited_twice = location
-            self.locations.add(location)
+        for _ in range(steps):
+            self.location = tuple([self.location[i] + Agent.walk_deltas[self.direction][i] for i in [0, 1]])
+            if self.first_location_visited_twice is None and self.location in self.locations:
+                self.first_location_visited_twice = self.location
+            self.locations.add(self.location)
 
     def move(self, code):
         turn_direction = code[0]
@@ -46,7 +36,7 @@ class Agent():
             self.move(code)
 
     def distance(self):
-        return abs(self.x) + abs(self.y)
+        return abs(self.location[0]) + abs(self.location[1])
 
     def distance_to_first_location_visited_twice(self):
         return abs(self.first_location_visited_twice[0]) + abs(self.first_location_visited_twice[1])
@@ -66,13 +56,11 @@ def test_visited_twice_distance():
 def test_move():
     agent = Agent()
     agent.move('R2')
-    assert agent.x == 2
-    assert agent.y == 0
+    assert agent.location == (2, 0)
 
     agent = Agent()
     agent.move('L100')
-    assert agent.x == -100
-    assert agent.y == 0
+    assert agent.location == (-100, 0)
 
 
 def test_turn():
