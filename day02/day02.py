@@ -20,23 +20,19 @@ class Keypad:
     def move_finger(self, direction):
         coordinate_delta = Keypad.coordinates_from_direction[direction]
         self.coordinates = self._add_lists(self.coordinates, coordinate_delta)
-        self.bring_finger_inside(coordinate_delta)
-
-    def bring_finger_inside(self, coordinate_delta):
         for i in [0, 1]:
             self.coordinates[i] = max(0, self.coordinates[i])
-            self.coordinates[i] = min(2, self.coordinates[i])
+            self.coordinates[i] = min(len(self.keys) - 1, self.coordinates[i])
+        if self.current_digit is None:
+            minus_delta = [-x for x in coordinate_delta]
+            self.coordinates = self._add_lists(self.coordinates, minus_delta)
 
     def move_all(self, sequence):
         for char in sequence:
             self.move_finger(char)
 
     def to_code(self, sequences):
-        out = ''
-        for sequence in sequences:
-            self.move_all(sequence)
-            out += self.current_digit
-        return out
+        return ''.join([(self.move_all(sequence), self.current_digit)[1] for sequence in sequences])
 
     @staticmethod
     def _add_lists(t1, t2):
@@ -55,16 +51,6 @@ class StarKeypad(Keypad):
                 ['5', '6', '7', '8', '9'],
                 [None, 'A', 'B', 'C', None],
                 [None, None, 'D', None, None]]
-
-    def bring_finger_inside(self, coordinate_delta):
-        for i in [0, 1]:
-            self.coordinates[i] = max(0, self.coordinates[i])
-            self.coordinates[i] = min(4, self.coordinates[i])
-        if self.current_digit is None:
-            minus_delta = [-x for x in coordinate_delta]
-            self.coordinates = self._add_lists(self.coordinates, minus_delta)
-
-
 
 
 input_ = """RDRRDLRRUDRUUUULDDRDUULLDUULDURDDUDRULDLUDDRLRDUDDURRRRURDURLLRDRUUULDLLLURDRLLULLUULULLLDLLLRRURRLRDUULRURRUDRRDRLURLRURLLULRUURRUURDDLDRDLDLLUDUULLLUUUUDULLDRRUURLDURDDDDDRLLRRURDLUDRRUUDLRRLLRDURDUDDDLRDDRDLRULLUULRULRLLULDDRURUUDLDDULDRLLURDDUDDUDRDUDLDRRRDURRLDRDRLDLLDUDDDULULRRULRLLURDRRDDUUUUUULRUDLRRDURDLRDLUDLDURUDDUUURUDLUUULDLRDURDLDUUDLDDDURUUDUUDRLRDULLDUULUDRUDRLRRRDLLDRUDULRRUDDURLDRURRLLRRRDRLLDLULULRRUURRURLLUDRRLRULURLDDDDDURUDRRRRULLUUDLDDLUUL
