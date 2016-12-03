@@ -1,8 +1,5 @@
-import sys
-
-
 def int_list_from_string(s):
-    s = s.strip()
+    s = s.strip()  # To remove line breaks etc
     list_with_some_empty_strings = s.split(' ')
     list_without_empty_strings = [i for i in list_with_some_empty_strings if i != '']
     return list(map(int, list_without_empty_strings))
@@ -28,12 +25,15 @@ def column_lists_from_row_lists(list_of_lists):
         output_list.extend(transpose(partial_list))
     return output_list
 
+
+def count_triangles(int_lists):
+    return [is_triangle(l) for l in int_lists].count(True)
+
+
 def count_column_triangles(string_list):
-    count = 0
     int_lists = [int_list_from_string(s) for s in string_list]
     new_int_lists = column_lists_from_row_lists(int_lists)
-    return [is_triangle(l) for l in new_int_lists].count(True)
-
+    return count_triangles(new_int_lists)
 
 
 def test_chunk():
@@ -47,8 +47,8 @@ def test_int_list_from_string():
 
 
 def test_is_triangle():
-    assert is_triangle([3, 3, 3]) == True
-    assert is_triangle([1, 1, 8]) == False
+    assert is_triangle([3, 3, 3]) is True
+    assert is_triangle([1, 1, 8]) is False
 
 
 def test_transpose():
@@ -70,12 +70,7 @@ def test_column_triangles():
     assert count_column_triangles(input_) == 6
 
 
-count = 0
 with open('input.txt') as f:
     lines = f.readlines()
-    for line in lines:
-        int_list = int_list_from_string(line)
-        if is_triangle(int_list):
-            count += 1
-    print(count)
+    print(count_triangles([int_list_from_string(s) for s in lines]))
     print(count_column_triangles(lines))
