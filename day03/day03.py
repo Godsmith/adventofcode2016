@@ -20,10 +20,9 @@ def transpose(l):
 
 
 def column_lists_from_row_lists(list_of_lists):
-    output_list = []
     for partial_list in chunk(list_of_lists, len(list_of_lists[0])):
-        output_list.extend(transpose(partial_list))
-    return output_list
+        for row in transpose(partial_list):
+            yield row
 
 
 def count_triangles(int_lists):
@@ -56,7 +55,7 @@ def test_transpose():
 
 
 def test_column_lists_from_row_lists():
-    assert column_lists_from_row_lists([[1, 2, 3], [4, 5, 6], [7, 8, 9], [1, 2, 3], [4, 5, 6], [7, 8, 9]]) == [
+    assert list(column_lists_from_row_lists([[1, 2, 3], [4, 5, 6], [7, 8, 9], [1, 2, 3], [4, 5, 6], [7, 8, 9]])) == [
         [1, 4, 7], [2, 5, 8], [3, 6, 9], [1, 4, 7], [2, 5, 8], [3, 6, 9]]
 
 
