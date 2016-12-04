@@ -37,3 +37,20 @@ def test_is_real():
 def test_sector_id():
     r = Room('aaaaa-bbb-z-y-x-123[abxyz]')
     assert r.sector_id == 123
+
+
+def test_shift_letter():
+    assert Room._shift_letter('a', 1) == 'b'
+    assert Room._shift_letter('z', 1) == 'a'
+    assert Room._shift_letter('a', 26) == 'a'
+    assert Room._shift_letter('a', 52) == 'a'
+    assert Room._shift_letter(' ', 1) == ' '
+
+
+def test_shift_string():
+    assert Room._shift_string('abc', 1) == 'bcd'
+
+
+def test_real_name():
+    r = Room('qzmt-zixmtkozy-ivhz-343[dummy]')
+    assert r.real_name == 'very encrypted name'
