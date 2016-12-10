@@ -4,14 +4,14 @@ from day09.compressed_string import CompressedString, CompressedString2
 def test_text_inside_parentheses():
     s = CompressedString('A(1x5)BC')
     assert s._text_inside_parentheses(1) == '1x5'
-    s = CompressedString('AB(11x25)BC')
-    assert s._text_inside_parentheses(2) == '11x25'
+    s = CompressedString('AB(2x10)BC')
+    assert s._text_inside_parentheses(2) == '2x10'
 
 
 def test_text_after_parentheses():
     s = CompressedString('A(1x5)BC')
     assert s._text_after_parentheses(1, 1) == 'B'
-    s = CompressedString('AB(11x25)BC')
+    s = CompressedString('AB(2x10)BC')
     assert s._text_after_parentheses(2, 2) == 'BC'
 
 
@@ -44,6 +44,10 @@ def test_decompress():
 
 def test_multipliers():
     s = CompressedString('ADVENT')
+    assert s._multipliers == [1, 1, 1, 1, 1, 1]
+
+    s = CompressedString('A(1x5)BC')
+    assert s._multipliers == [1, 0, 0, 0, 0, 0, 5, 1]
 
 
 def test_decompress_2():
