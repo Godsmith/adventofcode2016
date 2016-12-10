@@ -1,5 +1,5 @@
 class CompressedString(str):
-    def decompress(self):
+    def decompressed_length(self):
         decompressed = []
         i = 0
         while i < len(self):
@@ -11,7 +11,7 @@ class CompressedString(str):
             else:
                 decompressed.append(c)
                 i += 1
-        return ''.join(decompressed)
+        return len(''.join(decompressed))
 
     def _text_inside_parentheses(self, starting_parenthesis_index):
         e = self._ending_parenthesis_index(starting_parenthesis_index)

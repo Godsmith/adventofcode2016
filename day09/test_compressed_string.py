@@ -24,19 +24,19 @@ def test_parenthesis_command_text_and_next_index():
 
 def test_decompress():
     s = CompressedString('ADVENT')
-    assert len(s.decompress()) == 6
+    assert s.decompressed_length() == 6
 
     s = CompressedString('A(1x5)BC')
-    assert len(s.decompress()) == 7
+    assert s.decompressed_length() == 7
 
     s = CompressedString('(3x3)XYZ')
-    assert len(s.decompress()) == 9
+    assert s.decompressed_length() == 9
 
     s = CompressedString('A(2x2)BCD(2x2)EFG')
-    assert len(s.decompress()) == 11
+    assert s.decompressed_length() == 11
 
     s = CompressedString('(6x1)(1x3)A')
-    assert len(s.decompress()) == 6
+    assert s.decompressed_length() == 6
 
     s = CompressedString('X(8x2)(3x3)ABCY')
-    assert len(s.decompress()) == 18
+    assert s.decompressed_length() == 18
