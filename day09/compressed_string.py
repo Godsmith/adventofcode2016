@@ -14,7 +14,7 @@ class CompressedString():
         # Set parenthesis multipliers to 0
         for i in range(starting_parenthesis_index, e + 1):
             self._multipliers[i] = 0
-           
+
         text = self._text_inside_parentheses(starting_parenthesis_index)
         characters = int(text.split('x')[0])
         times = int(text.split('x')[1])

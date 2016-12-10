@@ -43,4 +43,4 @@ def test_decompress_2():
     assert s.decompressed_length() == 445
 
     s = CompressedString2('A(1x5)BC')
-    assert s.decompressed_length() == 8
+    assert s.decompressed_length() == 7
