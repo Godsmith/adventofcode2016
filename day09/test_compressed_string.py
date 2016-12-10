@@ -7,21 +7,6 @@ def test_text_inside_parentheses():
     s = CompressedString('AB(2x10)BC')
     assert s._text_inside_parentheses(2) == '2x10'
 
-
-def test_text_after_parentheses():
-    s = CompressedString('A(1x5)BC')
-    assert s._text_after_parentheses(1, 1) == 'B'
-    s = CompressedString('AB(2x10)BC')
-    assert s._text_after_parentheses(2, 2) == 'BC'
-
-
-def test_length_of_parenthesis_command_text_and_next_index():
-    s = CompressedString('A(1x5)BC')
-    assert s._length_of_parenthesis_command_and_next_index(1) == (5, 7)
-    s = CompressedString('AB(2x2)BC')
-    assert s._length_of_parenthesis_command_and_next_index(2) == (4, 9)
-
-
 def test_decompress():
     s = CompressedString('ADVENT')
     assert s.decompressed_length() == 6
