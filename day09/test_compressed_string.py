@@ -1,4 +1,4 @@
-from day09.compressed_string import CompressedString
+from day09.compressed_string import CompressedString, CompressedString2
 
 
 def test_text_inside_parentheses():
@@ -15,11 +15,11 @@ def test_text_after_parentheses():
     assert s._text_after_parentheses(2, 2) == 'BC'
 
 
-def test_parenthesis_command_text_and_next_index():
+def test_length_of_parenthesis_command_text_and_next_index():
     s = CompressedString('A(1x5)BC')
-    assert s._parenthesis_command_text_and_next_index(1) == ('BBBBB', 7)
+    assert s._length_of_parenthesis_command_and_next_index(1) == (5, 7)
     s = CompressedString('AB(2x2)BC')
-    assert s._parenthesis_command_text_and_next_index(2) == ('BCBC', 9)
+    assert s._length_of_parenthesis_command_and_next_index(2) == (4, 9)
 
 
 def test_decompress():
@@ -40,3 +40,18 @@ def test_decompress():
 
     s = CompressedString('X(8x2)(3x3)ABCY')
     assert s.decompressed_length() == 18
+
+
+def test_multipliers():
+    s = CompressedString('ADVENT')
+
+
+def test_decompress_2():
+    s = CompressedString2('ADVENT')
+    assert s.decompressed_length() == 6
+
+    s = CompressedString2('(25x3)(3x3)ABC(2x3)XY(5x2)PQRSTX(18x9)(3x2)TWO(5x7)SEVEN')
+    assert s.decompressed_length() == 445
+
+    s = CompressedString2('A(1x5)BC')
+    assert s.decompressed_length() == 8
