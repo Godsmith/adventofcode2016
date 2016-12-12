@@ -1,9 +1,15 @@
 class Floor:
-    def __init__(self, set_):
+    def __init__(self, id, set_=None):
+        if set_ is None:
+            set_ = set()
+        self.id = id
         self._set = {o for o in set_}
 
     def __eq__(self, other):
         return type(self) == type(other) and self.objects == other.objects
+
+    def __repr__(self):
+        return self._set.__repr__()
 
     @property
     def objects(self):
@@ -21,7 +27,7 @@ class Floor:
         return len(list(filter(lambda x: len(x) == 2 and x[1] == 'G' and x[0] != type, self._set))) > 0
 
     def without(self, objects):
-        return Floor(self.objects.difference(objects))
+        return Floor(self.id, self.objects.difference(objects))
 
     def including(self, objects):
-        return Floor(self.objects.union(objects))
+        return Floor(self.id, self.objects.union(objects))

@@ -10,20 +10,28 @@ flatten = chain.from_iterable
 class Facility:
     floors = ['F1', 'F2', 'F3', 'F4']
 
-    def __init__(self, state, moves=None):
+    def __init__(self, floors, moves=None):
         if moves is None:
             moves = []
-        self._state = {floor: Floor(objects) for floor, objects in state.items()}
+        self._floors = floors
+        self._moves = moves
         for move in moves:
             self._move(move)
 
+    def __repr__(self):
+        return repr(self._floors)
+
+    def __eq__(self, other):
+        return type(self) == type(other) and self._floors == other._floors
+
+
     def to_string(self):
-        objects = sorted(flatten([floor.objects for floor in self._state.values()]))
+        objects = sorted(flatten([floor.objects for floor in self._floors]))
         out = []
-        for floor in reversed(self.floors):
-            out.append(floor + ' ')
+        for floor_id in reversed(self.floors):
+            out.append(floor_id + ' ')
             for object in objects:
-                if object in self._state[floor].objects:
+                if object in [floor for floor in self._floors if floor.id == floor_id][0].objects:
                     string = object
                 else:
                     string = '.'
@@ -31,14 +39,19 @@ class Facility:
             out.append('\n')
         return ''.join(out)
 
+    def possible_moves(self):
+        for floor in self._adjacent_floors():
+            for self._combinations_of_objects_on_current_floor():
+                pass
+
     def _move(self, move: Move):
-        self._state[self._current_floor_id()] = self._current_floor().without(move.cargo.union({'E'}))
-        self._state[move.destination_floor] = self._state[move.destination_floor].including(move.cargo.union({'E'}))
-        new_facility = Facility(self._state)
-        return new_facility
+        self._floors[self._current_floor_index()] = self._current_floor().without(move.cargo.union({'E'}))
+        destination_floor_id = self._index_of_floor_with_id(move.destination_floor)
+        new_destination_floor = self._floors[destination_floor_id].including(move.cargo.union({'E'}))
+        self._floors[destination_floor_id] = new_destination_floor
 
     def is_legal(self):
-        return not (False in [floor.is_legal() for floor in self._state.values()])
+        return not (False in [floor.is_legal() for floor in self._floors])
 
     def _adjacent_floors(self):
         current_floor_id = self._current_floor_id()
@@ -56,14 +69,23 @@ class Facility:
         return self._combinations_of_objects(non_elevator_objects)
 
     def _current_floor(self) -> Floor:
-        for floor in self._state.values():
-            if 'E' in floor.objects:
-                return floor
+        print(self._floors)
+        return next(filter(lambda f: 'E' in f.objects, self._floors))
 
     def _current_floor_id(self) -> Floor:
-        for id, floor in self._state.items():
+        for floor in self._floors:
             if 'E' in floor.objects:
-                return id
+                return floor.id
+
+    def _current_floor_index(self):
+        for i, floor in enumerate(self._floors):
+            if 'E' in floor.objects:
+                return i
+
+    def _index_of_floor_with_id(self, id):
+        for i, floor in enumerate(self._floors):
+            if floor.id == id:
+                return i
 
     @staticmethod
     def _combinations_of_objects(objects: set):

@@ -1,12 +1,13 @@
 from day11.facility import Facility
+from day11.floor import Floor
 from day11.move import Move
 
 
 def test_to_string():
-    facility = Facility({'F1': {'E', 'HM', 'LM'},
-                         'F2': {'HG'},
-                         'F3': {'LG'},
-                         'F4': set()})
+    facility = Facility([Floor('F1', {'E', 'HM', 'LM'}),
+                         Floor('F2', {'HG'}),
+                         Floor('F3', {'LG'}),
+                         Floor('F4')])
     assert facility.to_string() == ("F4 .  .  .  .  .  \n"
                                     "F3 .  .  .  LG .  \n"
                                     "F2 .  HG .  .  .  \n"
@@ -14,16 +15,16 @@ def test_to_string():
 
 
 def test_legal():
-    facility = Facility({'F1': {'E', 'HM', 'LM'},
-                         'F2': {'HG'},
-                         'F3': {'LG'},
-                         'F4': set()})
+    facility = Facility([Floor('F1', {'E', 'HM', 'LM'}),
+                         Floor('F2', {'HG'}),
+                         Floor('F3', {'LG'}),
+                         Floor('F4')])
     assert facility.is_legal()
 
-    facility = Facility({'F1': {'E', 'HG', 'HM', 'LM'},
-                         'F2': set(),
-                         'F3': {'LG'},
-                         'F4': set()})
+    facility = Facility([Floor('F1', {'E', 'HG', 'HM', 'LM'}),
+                         Floor('F2'),
+                         Floor('F3', {'LG'}),
+                         Floor('F4')])
     assert not facility.is_legal()
 
 
@@ -35,47 +36,46 @@ def test_combinations_of_objects():
 
 
 def test_combination_of_objects_on_current_floor():
-    facility = Facility({'F1': {'E', 'HM', 'LM'},
-                         'F2': {'HG'},
-                         'F3': {'LG'},
-                         'F4': set()})
+    facility = Facility([Floor('F1', {'E', 'HM', 'LM'}),
+                         Floor('F2', {'HG'}),
+                         Floor('F3', {'LG'}),
+                         Floor('F4')])
     assert facility._combinations_of_objects_on_current_floor() == {frozenset(['HM']), frozenset(['LM']),
                                                                     frozenset(['HM', 'LM'])}
 
 
 def test_adjacent_floors():
-    facility = Facility({'F1': {'E', 'HM', 'LM'},
-                         'F2': {'HG'},
-                         'F3': {'LG'},
-                         'F4': set()})
+    facility = Facility([Floor('F1', {'E', 'HM', 'LM'}),
+                         Floor('F2', {'HG'}),
+                         Floor('F3', {'LG'}),
+                         Floor('F4')])
     assert facility._adjacent_floors() == {'F2'}
-    facility = Facility({'F1': {'HM', 'LM'},
-                         'F2': {'E', 'HG'},
-                         'F3': {'LG'},
-                         'F4': set()})
+    facility = Facility([Floor('F1', {'HM', 'LM'}),
+                         Floor('F2', {'E', 'HG'}),
+                         Floor('F3', {'LG'}),
+                         Floor('F4')])
     assert facility._adjacent_floors() == {'F1', 'F3'}
-    facility = Facility({'F1': {'HM', 'LM'},
-                         'F2': {'HG'},
-                         'F3': {'LG'},
-                         'F4': {'E'}})
+    facility = Facility([Floor('F1', {'HM', 'LM'}),
+                         Floor('F2', {'HG'}),
+                         Floor('F3', {'LG'}),
+                         Floor('F4', {'E'})])
     assert facility._adjacent_floors() == {'F3'}
 
 
 def test_move():
-    facility = Facility({'F1': {'E', 'HM', 'LM'},
-                         'F2': {'HG'},
-                         'F3': {'LG'},
-                         'F4': set()}, [Move('F2', {'HM', 'LM'})])
-    facility2 = facility._move(Move('F2', {'HM', 'LM'}))
-    assert facility2 == Facility({'F1': set(),
-                                  'F2': {'E', 'HM', 'LM', 'HG'},
-                                  'F3': {'LG'},
-                                  'F4': set()})
+    facility = Facility([Floor('F1', {'E', 'HM', 'LM'}),
+                         Floor('F2', {'HG'}),
+                         Floor('F3', {'LG'}),
+                         Floor('F4')], [Move('F2', {'HM', 'LM'})])
+    assert facility == Facility([Floor('F1'),
+                                 Floor('F2', {'E', 'HM', 'LM', 'HG'}),
+                                 Floor('F3', {'LG'}),
+                                 Floor('F4')])
 
 
 def test_possible_moves():
-    facility = Facility({'F1': {'E', 'HM', 'LM'},
-                         'F2': {'HG'},
-                         'F3': {'LG'},
-                         'F4': set()})
+    facility = Facility([Floor('F1', {'E', 'HM', 'LM'}),
+                         Floor('F2', {'HG'}),
+                         Floor('F3', {'LG'}),
+                         Floor('F4')])
     assert facility.possible_moves() == {Move('F2', 'HM')}
