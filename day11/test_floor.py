@@ -2,25 +2,25 @@ from day11.floor import Floor
 
 
 def test_legal():
-    floor = Floor({'HG', 'HM'})
+    floor = Floor('F1', {'HG', 'HM'})
     assert floor.is_legal()
 
-    floor = Floor({})
+    floor = Floor('F1')
     assert floor.is_legal()
 
-    floor = Floor({'HG', 'PG'})
+    floor = Floor('F1', {'HG', 'PG'})
     assert floor.is_legal()
 
-    floor = Floor({'HG', 'PM'})
+    floor = Floor('F1', {'HG', 'PM'})
     assert not floor.is_legal()
 
 
 def test_eq():
-    assert Floor({'HG', 'HM'}) == Floor({'HG', 'HM'})
-    assert not Floor({'HM'}) == Floor({'HG', 'HM'})
-    assert not Floor({'HM'}) == 'sdf'
+    assert Floor('F1', {'HG', 'HM'}) == Floor('F1', {'HG', 'HM'})
+    assert not Floor('F1', {'HM'}) == Floor('F1', {'HG', 'HM'})
+    assert not Floor('F1', {'HM'}) == 'sdf'
 
 
 def test_without():
-    floor = Floor({'HG', 'HM'})
-    assert floor.without({'HG'}) == Floor({'HG', 'HM'})
+    floor = Floor('F1', {'HG', 'HM'})
+    assert floor.without({'HG'}) == Floor('F1', {'HM'})

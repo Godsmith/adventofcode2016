@@ -1,3 +1,4 @@
+from copy import deepcopy
 from itertools import chain
 from itertools import combinations
 
@@ -10,20 +11,23 @@ flatten = chain.from_iterable
 class Facility:
     floors = ['F1', 'F2', 'F3', 'F4']
 
-    def __init__(self, floors, moves=None):
+    def __init__(self, floors):
+        self._floors = floors
+
+    @classmethod
+    def create(cls, initial_floors, moves=None):
         if moves is None:
             moves = []
-        self._floors = floors
-        self._moves = moves
+        facility = Facility(initial_floors)
         for move in moves:
-            self._move(move)
+            facility._move(move)
+        return facility
 
     def __repr__(self):
         return repr(self._floors)
 
     def __eq__(self, other):
         return type(self) == type(other) and self._floors == other._floors
-
 
     def to_string(self):
         objects = sorted(flatten([floor.objects for floor in self._floors]))
@@ -42,7 +46,11 @@ class Facility:
     def possible_moves(self):
         for floor in self._adjacent_floors():
             for objects in self._combinations_of_objects_on_current_floor():
-                yield Move(floor, objects)
+                move = Move(floor, objects)
+                new_facility = deepcopy(self)
+                new_facility._move(move)
+                if new_facility.is_legal():
+                    yield move
 
     def _move(self, move: Move):
         self._floors[self._current_floor_index()] = self._current_floor().without(move.cargo.union({'E'}))
