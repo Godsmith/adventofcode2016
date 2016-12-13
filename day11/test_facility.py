@@ -78,4 +78,4 @@ def test_possible_moves():
                          Floor('F2', {'HG'}),
                          Floor('F3', {'LG'}),
                          Floor('F4')])
-    assert set(facility.possible_moves()) == {Move('F2', 'HM')}
+    assert set(facility.possible_moves()) == {Move('F2', {'HM'})}
