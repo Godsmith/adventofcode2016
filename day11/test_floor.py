@@ -17,6 +17,9 @@ def test_legal():
     floor = Floor('F1', {'HG', 'PM'})
     assert not floor.is_legal()
 
+    floor = Floor('F1', {'HM', 'PM', 'CM'})
+    assert not floor.is_legal()
+
 
 def test_eq():
     assert Floor('F1', {'HG', 'HM'}) == Floor('F1', {'HG', 'HM'})

@@ -24,6 +24,13 @@ class Floor:
                 if s[1] == 'M':
                     if self._contains_generator_not_of_type(s[0]) and not s[0] + 'G' in self._set:
                         return False
+        # Three different microchips without generators on the same floor
+        count = 0
+        for object in self._set:
+            if len(object) == 2 and object[1] == 'M' and not object[0] + 'G' in self._set:
+                count += 1
+        if count >= 3:
+            return False
         return True
 
     def _contains_generator_not_of_type(self, type):
