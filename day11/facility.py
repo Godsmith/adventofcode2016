@@ -65,6 +65,9 @@ class Facility:
         floors_are_legal = [floor.is_legal() for floor in self._floors]
         return not (False in floors_are_legal)
 
+    def is_up(self, destination_floor_id):
+        return destination_floor_id > self._current_floor_id()
+
     def _adjacent_floors(self):
         current_floor_id = self._current_floor_id()
         if current_floor_id == self.floors[0]:

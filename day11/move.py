@@ -15,3 +15,6 @@ class Move:
 
     def __str__(self):
         return "Move (%s) to %s" % (', '.join(self.cargo), self.destination_floor)
+
+    def __len__(self):
+        return len(self.cargo)

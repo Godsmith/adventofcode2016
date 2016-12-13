@@ -92,3 +92,13 @@ def test_possible_moves():
                          Floor('F4')])
     assert set(facility.possible_moves()) == {Move('F1', {'HM'}), Move('F1', {'LG'}), Move('F1', {'LG', 'HG'}),
                                               Move('F3', {'HG', 'HM'}), Move('F3', {'LG', 'HG'}), Move('F3', {'LG'})}
+
+
+def test_is_up():
+    facility = Facility([Floor('F1', {'HM', 'LM'}),
+                         Floor('F2', {'E', 'HG'}),
+                         Floor('F3', {'LG'}),
+                         Floor('F4')])
+    assert facility.is_up('F3')
+    assert not facility.is_up('F2')
+    assert not facility.is_up('F1')
