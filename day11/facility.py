@@ -41,8 +41,8 @@ class Facility:
 
     def possible_moves(self):
         for floor in self._adjacent_floors():
-            for self._combinations_of_objects_on_current_floor():
-                pass
+            for objects in self._combinations_of_objects_on_current_floor():
+                yield Move(floor, objects)
 
     def _move(self, move: Move):
         self._floors[self._current_floor_index()] = self._current_floor().without(move.cargo.union({'E'}))
@@ -69,7 +69,6 @@ class Facility:
         return self._combinations_of_objects(non_elevator_objects)
 
     def _current_floor(self) -> Floor:
-        print(self._floors)
         return next(filter(lambda f: 'E' in f.objects, self._floors))
 
     def _current_floor_id(self) -> Floor:
