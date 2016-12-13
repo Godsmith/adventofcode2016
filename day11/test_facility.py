@@ -27,6 +27,12 @@ def test_legal():
                          Floor('F4')])
     assert not facility.is_legal()
 
+    facility = Facility([Floor('F1', {'LM', 'LG', 'HG'}),
+                         Floor('F2', {'E', 'HM', }),
+                         Floor('F3', {'RG'}),
+                         Floor('F4')])
+    assert facility.is_legal()
+
 
 def test_combinations_of_objects():
     assert Facility._combinations_of_objects({'HG', 'HM', 'LG'}) == {frozenset(['HG']), frozenset(['HM']),
@@ -64,9 +70,9 @@ def test_adjacent_floors():
 
 def test_create():
     facility = Facility.create([Floor('F1', {'E', 'HM', 'LM'}),
-                         Floor('F2', {'HG'}),
-                         Floor('F3', {'LG'}),
-                         Floor('F4')], [Move('F2', {'HM', 'LM'})])
+                                Floor('F2', {'HG'}),
+                                Floor('F3', {'LG'}),
+                                Floor('F4')], [Move('F2', {'HM', 'LM'})])
     assert facility == Facility([Floor('F1'),
                                  Floor('F2', {'E', 'HM', 'LM', 'HG'}),
                                  Floor('F3', {'LG'}),
@@ -79,3 +85,10 @@ def test_possible_moves():
                          Floor('F3', {'LG'}),
                          Floor('F4')])
     assert set(facility.possible_moves()) == {Move('F2', {'HM'})}
+
+    facility = Facility([Floor('F1', {'LM'}),
+                         Floor('F2', {'E', 'HG', 'HM', 'LG'}),
+                         Floor('F3', {'RG'}),
+                         Floor('F4')])
+    assert set(facility.possible_moves()) == {Move('F1', {'HM'}), Move('F1', {'LG'}), Move('F1', {'LG', 'HG'}),
+                                              Move('F3', {'HG', 'HM'}), Move('F3', {'LG', 'HG'}), Move('F3', {'LG'})}

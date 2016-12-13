@@ -59,7 +59,8 @@ class Facility:
         self._floors[destination_floor_id] = new_destination_floor
 
     def is_legal(self):
-        return not (False in [floor.is_legal() for floor in self._floors])
+        floors_are_legal = [floor.is_legal() for floor in self._floors]
+        return not (False in floors_are_legal)
 
     def _adjacent_floors(self):
         current_floor_id = self._current_floor_id()

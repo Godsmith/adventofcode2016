@@ -11,6 +11,9 @@ def test_legal():
     floor = Floor('F1', {'HG', 'PG'})
     assert floor.is_legal()
 
+    floor = Floor('F1', {'HG', 'LG', 'PG'})
+    assert floor.is_legal()
+
     floor = Floor('F1', {'HG', 'PM'})
     assert not floor.is_legal()
 

@@ -19,7 +19,7 @@ class Floor:
         for s in self._set:
             if len(s) == 2:
                 if s[1] == 'M':
-                    if self._contains_generator_not_of_type(s[0]):
+                    if self._contains_generator_not_of_type(s[0]) and not s[0] + 'G' in self._set:
                         return False
         return True
 
