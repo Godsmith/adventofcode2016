@@ -93,6 +93,20 @@ def test_possible_moves():
     assert set(facility.possible_moves()) == {Move('F1', {'HM'}), Move('F1', {'LG'}), Move('F1', {'LG', 'HG'}),
                                               Move('F3', {'HG', 'HM'}), Move('F3', {'LG', 'HG'}), Move('F3', {'LG'})}
 
+    facility = Facility([Floor('F1', {'LM'}),
+                         Floor('F2', {'E', 'HG', 'HM', 'LG'}),
+                         Floor('F3', {'RG'}),
+                         Floor('F4')])
+    excluded_facility = Facility([Floor('F1', {'E', 'LM', 'HM'}),
+                                  Floor('F2', {'HG', 'LG'}),
+                                  Floor('F3', {'RG'}),
+                                  Floor('F4')])
+    assert set(facility.possible_moves(excluded_states={excluded_facility})) == {Move('F1', {'LG'}),
+                                                                                 Move('F1', {'LG', 'HG'}),
+                                                                                 Move('F3', {'HG', 'HM'}),
+                                                                                 Move('F3', {'LG', 'HG'}),
+                                                                                 Move('F3', {'LG'})}
+
 
 def test_is_up():
     facility = Facility([Floor('F1', {'HM', 'LM'}),
@@ -102,3 +116,16 @@ def test_is_up():
     assert facility.is_up('F3')
     assert not facility.is_up('F2')
     assert not facility.is_up('F1')
+
+
+def test_all_objects_on_fourth_floor():
+    facility = Facility([Floor('F1', {'HM', 'LM'}),
+                         Floor('F2', {'E', 'HG'}),
+                         Floor('F3', {'LG'}),
+                         Floor('F4')])
+    assert not facility.all_objects_on_fourth_floor()
+    facility = Facility([Floor('F1'),
+                         Floor('F2'),
+                         Floor('F3'),
+                         Floor('F4', {'E', 'LG', 'LM'})])
+    assert facility.all_objects_on_fourth_floor()

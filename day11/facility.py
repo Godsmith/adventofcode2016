@@ -18,7 +18,7 @@ class Facility:
     def create(cls, initial_floors, moves=None):
         if moves is None:
             moves = []
-        facility = Facility(initial_floors)
+        facility = Facility(deepcopy(initial_floors))
         for move in moves:
             facility._move(move)
         return facility
@@ -31,6 +31,9 @@ class Facility:
 
     def __str__(self):
         return '\n'.join([str(floor) for floor in self._floors])
+
+    def __hash__(self):
+        return hash(self.to_string())
 
     def to_string(self):
         objects = sorted(flatten([floor.objects for floor in self._floors]))
@@ -46,13 +49,15 @@ class Facility:
             out.append('\n')
         return ''.join(out)
 
-    def possible_moves(self):
+    def possible_moves(self, excluded_states=None):
+        if excluded_states is None:
+            excluded_states = []
         for floor in self._adjacent_floors():
             for objects in self._combinations_of_objects_on_current_floor():
                 move = Move(floor, objects)
                 new_facility = deepcopy(self)
                 new_facility._move(move)
-                if new_facility.is_legal():
+                if new_facility.is_legal() and not new_facility in excluded_states:
                     yield move
 
     def _move(self, move: Move):
@@ -104,3 +109,6 @@ class Facility:
     @staticmethod
     def _combinations_of_objects(objects: set):
         return {frozenset([o]) for o in objects}.union({frozenset(c) for c in combinations(objects, 2)})
+
+    def all_objects_on_fourth_floor(self):
+        return sum([len(f) for f in self._floors[:3]]) == 0

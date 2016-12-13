@@ -14,6 +14,9 @@ class Floor:
     def __str__(self):
         return '%s: (%s)' % (self.id, ', '.join(self._set))
 
+    def __len__(self):
+        return len(self._set)
+
     @property
     def objects(self):
         return self._set
