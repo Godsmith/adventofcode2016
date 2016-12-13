@@ -29,6 +29,9 @@ class Facility:
     def __eq__(self, other):
         return type(self) == type(other) and self._floors == other._floors
 
+    def __str__(self):
+        return '\n'.join([str(floor) for floor in self._floors])
+
     def to_string(self):
         objects = sorted(flatten([floor.objects for floor in self._floors]))
         out = []

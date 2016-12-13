@@ -12,3 +12,6 @@ class Move:
 
     def __hash__(self):
         return hash((self.destination_floor, tuple(self.cargo)))
+
+    def __str__(self):
+        return "Move (%s) to %s" % (', '.join(self.cargo), self.destination_floor)

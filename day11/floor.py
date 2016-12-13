@@ -11,6 +11,9 @@ class Floor:
     def __repr__(self):
         return self._set.__repr__()
 
+    def __str__(self):
+        return '%s: (%s)' % (self.id, ', '.join(self._set))
+
     @property
     def objects(self):
         return self._set
