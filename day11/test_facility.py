@@ -114,8 +114,8 @@ def test_adjacent_states():
                          Floor('F3', {'LG'}),
                          Floor('F4')])
     assert facility.adjacent_states == {
-        Facility([Floor('F1', {'E', 'LM'}),
-                  Floor('F2', {'HG', 'HM'}),
+        Facility([Floor('F1', {'LM'}),
+                  Floor('F2', {'E', 'HG', 'HM'}),
                   Floor('F3', {'LG'}),
                   Floor('F4')])}
 

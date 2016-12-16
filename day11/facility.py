@@ -13,6 +13,19 @@ class Facility:
 
     def __init__(self, floors):
         self._floors = floors
+        self._possible_moves = []
+        self._adjacent_states = set()
+        self._state_from_move = {}
+
+        for floor in self._adjacent_floors():
+            for objects in self._combinations_of_objects_on_current_floor():
+                move = Move(floor, objects)
+                new_facility = deepcopy(self)
+                new_facility._move(move)
+                if new_facility.is_legal():
+                    self._adjacent_states.add(new_facility)
+                    self._possible_moves.append(move)
+                    self._state_from_move[move] = new_facility
 
     @classmethod
     def create(cls, initial_floors, moves=None):
@@ -50,19 +63,15 @@ class Facility:
         return ''.join(out)
 
     @property
-    def adjacent_states(self):
-        pass
+    def adjacent_states(self, excluded_states=None):
+        if excluded_states is None:
+            excluded_states = []
+        return {facility for facility in self._adjacent_states if facility not in excluded_states}
 
     def possible_moves(self, excluded_states=None):
         if excluded_states is None:
             excluded_states = []
-        for floor in self._adjacent_floors():
-            for objects in self._combinations_of_objects_on_current_floor():
-                move = Move(floor, objects)
-                new_facility = deepcopy(self)
-                new_facility._move(move)
-                if new_facility.is_legal() and not new_facility in excluded_states:
-                    yield move
+        return [move for move in self._possible_moves if self._state_from_move[move] not in excluded_states]
 
     def _move(self, move: Move):
         self._floors[self._current_floor_index()] = self._current_floor().without(move.cargo.union({'E'}))
