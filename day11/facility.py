@@ -62,7 +62,6 @@ class Facility:
             out.append('\n')
         return ''.join(out)
 
-    @property
     def adjacent_states(self, excluded_states=None):
         if excluded_states is None:
             excluded_states = []

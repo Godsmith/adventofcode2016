@@ -7,15 +7,15 @@ class NoGoodMovesException(Exception):
 
 
 def main():
-    # initial_state = [Floor('F1', {'E', 'SG', 'SM', 'PG', 'PM'}),
-    #                  Floor('F2', {'TG', 'RG', 'RM', 'CG', 'CM'}),
-    #                  Floor('F3', {'TM'}),
-    #                  Floor('F4')]
-    initial_state = [Floor('F1', {'E', 'EG', 'EM', 'DG', 'DM', 'SG', 'SM', 'PG', 'PM'}),
+    initial_state = [Floor('F1', {'E', 'SG', 'SM', 'PG', 'PM'}),
                      Floor('F2', {'TG', 'RG', 'RM', 'CG', 'CM'}),
                      Floor('F3', {'TM'}),
                      Floor('F4')]
-    moves = []
+    # initial_state = [Floor('F1', {'E', 'EG', 'EM', 'DG', 'DM', 'SG', 'SM', 'PG', 'PM'}),
+    #                  Floor('F2', {'TG', 'RG', 'RM', 'CG', 'CM'}),
+    #                  Floor('F3', {'TM'}),
+    #                  Floor('F4')]
+    # moves = []
     # excluded_states = set()
     # while True:
     #     facility = Facility.create(initial_state, moves)
@@ -35,12 +35,23 @@ def main():
     #         moves = moves[:-1]
     #         print('No good moves, excluding facility.')
 
-    current_facilities = {Facility.create(initial_state, moves)}
-    evaluated_facilities = {}
+    facilities_to_evaluate_next_step = {Facility.create(initial_state)}
+    evaluated_facilities = set()
+    moves = 0
     while True:
+        print(moves)
+        facilities_to_evaluate_this_step = list(facilities_to_evaluate_next_step)
+        facilities_to_evaluate_next_step = []
 
-        for facility in current_facilities:
-            pass
+        for facility in facilities_to_evaluate_this_step:
+            if facility.all_objects_on_fourth_floor():
+                print('solution found')
+                return
+            adjacent_states_to_current_facility = facility.adjacent_states(evaluated_facilities)
+            facilities_to_evaluate_next_step.extend(adjacent_states_to_current_facility)
+            evaluated_facilities.add(facility)
+
+        moves += 1
 
 
 
