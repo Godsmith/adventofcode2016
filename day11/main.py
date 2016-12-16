@@ -16,24 +16,32 @@ def main():
                      Floor('F3', {'TM'}),
                      Floor('F4')]
     moves = []
-    excluded_states = set()
+    # excluded_states = set()
+    # while True:
+    #     facility = Facility.create(initial_state, moves)
+    #     print()
+    #     print(facility)
+    #     if facility.all_objects_on_fourth_floor():
+    #         break
+    #     possible_moves = list(facility.possible_moves(excluded_states))
+    #     for i, move in enumerate(possible_moves):
+    #         print('%s: %s' % (i, move))
+    #     try:
+    #         move = best_move(possible_moves, facility)
+    #         moves.append(move)
+    #         print('Selected move: %s. Total moves: %s' % (move, len(moves)))
+    #     except NoGoodMovesException:
+    #         excluded_states.add(facility)
+    #         moves = moves[:-1]
+    #         print('No good moves, excluding facility.')
+
+    current_facilities = {Facility.create(initial_state, moves)}
+    evaluated_facilities = {}
     while True:
-        facility = Facility.create(initial_state, moves)
-        print()
-        print(facility)
-        if facility.all_objects_on_fourth_floor():
-            break
-        possible_moves = list(facility.possible_moves(excluded_states))
-        for i, move in enumerate(possible_moves):
-            print('%s: %s' % (i, move))
-        try:
-            move = best_move(possible_moves, facility)
-            moves.append(move)
-            print('Selected move: %s. Total moves: %s' % (move, len(moves)))
-        except NoGoodMovesException:
-            excluded_states.add(facility)
-            moves = moves[:-1]
-            print('No good moves, excluding facility.')
+
+        for facility in current_facilities:
+            pass
+
 
 
 def best_move(moves, facility):

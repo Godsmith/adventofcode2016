@@ -49,6 +49,10 @@ class Facility:
             out.append('\n')
         return ''.join(out)
 
+    @property
+    def adjacent_states(self):
+        pass
+
     def possible_moves(self, excluded_states=None):
         if excluded_states is None:
             excluded_states = []

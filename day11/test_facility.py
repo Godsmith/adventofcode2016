@@ -108,6 +108,18 @@ def test_possible_moves():
                                                                                  Move('F3', {'LG'})}
 
 
+def test_adjacent_states():
+    facility = Facility([Floor('F1', {'E', 'HM', 'LM'}),
+                         Floor('F2', {'HG'}),
+                         Floor('F3', {'LG'}),
+                         Floor('F4')])
+    assert facility.adjacent_states == {
+        Facility([Floor('F1', {'E', 'LM'}),
+                  Floor('F2', {'HG', 'HM'}),
+                  Floor('F3', {'LG'}),
+                  Floor('F4')])}
+
+
 def test_is_up():
     facility = Facility([Floor('F1', {'HM', 'LM'}),
                          Floor('F2', {'E', 'HG'}),
