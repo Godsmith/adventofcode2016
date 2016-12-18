@@ -27,13 +27,13 @@ class Facility:
         return repr(self._floors)
 
     def __eq__(self, other):
-        return type(self) == type(other) and self._floors == other._floors
+        return type(self) == type(other) and self._floors == other._floors  # self._locations == other._locations
 
     def __str__(self):
         return '\n'.join([str(floor) for floor in self._floors])
 
     def __hash__(self):
-        return hash(self.to_string())
+        return hash(self.to_string())  #hash(tuple(self._floors))
 
     def to_string(self):
         objects = sorted(flatten([floor.objects for floor in self._floors]))
@@ -123,3 +123,19 @@ class Facility:
 
     def all_objects_on_fourth_floor(self):
         return sum([len(f) for f in self._floors[:3]]) == 0
+
+    @property
+    def _locations(self):
+        # Another way of representing the locations of the items
+        items = {}
+        types = set()
+        for floor in self._floors:
+            for item in floor.objects:
+                if item == 'E':
+                    locations = (int(floor.id[1]), set())  # here the output object is created
+                else:
+                    items[item] = int(floor.id[1])
+                    types.add(item[0])
+        for type in types:
+            locations[1].add((items[type + 'M'], items[type + 'G']))
+        return locations

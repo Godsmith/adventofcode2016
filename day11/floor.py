@@ -17,6 +17,9 @@ class Floor:
     def __len__(self):
         return len(self._set)
 
+    def __hash__(self):
+        return hash(tuple(self._set))
+
     @property
     def objects(self):
         return self._set

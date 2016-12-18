@@ -18,7 +18,7 @@ def test_solve_example():
 
 
 def test_solve_slower():
-    # 4s 55 ms
+    # 3s 981ms to 4s 295ms
     solver = Solver(initial_state=[Floor('F1', {'E', 'HM', 'LM', 'SM'}),
                                    Floor('F2', {'HG'}),
                                    Floor('F3', {'LG', 'SG'}),

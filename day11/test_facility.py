@@ -95,11 +95,11 @@ def test_possible_moves():
 
     facility = Facility([Floor('F1', {'LM'}),
                          Floor('F2', {'E', 'HG', 'HM', 'LG'}),
-                         Floor('F3', {'RG'}),
+                         Floor('F3', {'RG', 'RM'}),
                          Floor('F4')])
     excluded_facility = Facility([Floor('F1', {'E', 'LM', 'HM'}),
                                   Floor('F2', {'HG', 'LG'}),
-                                  Floor('F3', {'RG'}),
+                                  Floor('F3', {'RG', 'RM'}),
                                   Floor('F4')])
     assert set(facility.possible_moves(excluded_states={excluded_facility})) == {Move('F1', {'LG'}),
                                                                                  Move('F1', {'LG', 'HG'}),
@@ -141,3 +141,33 @@ def test_all_objects_on_fourth_floor():
                          Floor('F3'),
                          Floor('F4', {'E', 'LG', 'LM'})])
     assert facility.all_objects_on_fourth_floor()
+
+
+def test_locations():
+    facility = Facility([Floor('F1', {'HM', 'LM'}),
+                         Floor('F2', {'E', 'HG'}),
+                         Floor('F3', {'LG'}),
+                         Floor('F4')])
+    assert facility._locations == (2, {(1, 2), (1, 3)})
+
+# def test_equality():
+#     facility = Facility([Floor('F1', {'HM', 'LM'}),
+#                          Floor('F2', {'E', 'HG'}),
+#                          Floor('F3', {'LG'}),
+#                          Floor('F4')])
+#     facility2 = Facility([Floor('F1', {'HM', 'LM'}),
+#                           Floor('F2', {'E', 'HG'}),
+#                           Floor('F3', {'LG'}),
+#                           Floor('F4')])
+#
+#     assert facility == facility2
+#
+#     facility = Facility([Floor('F1', {'HM', 'LM'}),
+#                          Floor('F2', {'E', 'HG'}),
+#                          Floor('F3', {'LG'}),
+#                          Floor('F4')])
+#     facility2 = Facility([Floor('F1', {'LM', 'HM'}),
+#                           Floor('F2', {'E', 'LG'}),
+#                           Floor('F3', {'HG'}),
+#                           Floor('F4')])
+#     assert facility == facility2
