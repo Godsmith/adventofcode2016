@@ -7,5 +7,10 @@ input_ = ['Disc #1 has 17 positions; at time=0, it is at position 1.',
           'Disc #5 has 3 positions; at time=0, it is at position 0.',
           'Disc #6 has 13 positions; at time=0, it is at position 5.']
 
+part2 = True
+
+if part2:
+    input_.append('Disc #7 has 11 positions; at time=0, it is at position 0.')
+
 sculpture = Sculpture(input_)
 print(sculpture.time_for_first_capsule_passing_through())
