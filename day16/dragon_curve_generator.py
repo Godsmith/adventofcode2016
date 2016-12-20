@@ -29,3 +29,4 @@ class DragonCurveGenerator:
 
 
 print(DragonCurveGenerator.checksum_of_filled_disk(272, '11101000110010100'))
+print(DragonCurveGenerator.checksum_of_filled_disk(35651584, '11101000110010100'))
