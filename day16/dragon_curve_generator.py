@@ -14,7 +14,18 @@ class DragonCurveGenerator:
         return DragonCurveGenerator.checksum(new_string)
 
     @staticmethod
+    def checksum_of_filled_disk(length, state):
+        if len(state) < length:
+            return DragonCurveGenerator.checksum_of_filled_disk(length, DragonCurveGenerator.step(state))
+        state = state[:length]
+        return DragonCurveGenerator.checksum(state)
+
+
+    @staticmethod
     def _chunks(l, n):
         """Yield successive n-sized chunks from l."""
         for i in range(0, len(l), n):
             yield l[i:i + n]
+
+
+print(DragonCurveGenerator.checksum_of_filled_disk(272, '11101000110010100'))
