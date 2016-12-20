@@ -7,7 +7,7 @@ class Maze:
     OPEN_LETTERS = ['b', 'c', 'd', 'e', 'f']
     DIRECTIONS = ['U', 'D', 'L', 'R']
 
-    def __init__(self, passcode, room, path):
+    def __init__(self, passcode, room=(0, 0), path=''):
         self._passcode = passcode
         self._room = room
         self._path = path
@@ -17,6 +17,14 @@ class Maze:
 
     def __eq__(self, other):
         return self._passcode == other._passcode and self._room == other._room and self._path == other._path
+
+    @property
+    def path(self):
+        return self._path
+
+    @property
+    def room(self):
+        return self._room
 
     @property
     def adjacent_states(self):
@@ -34,5 +42,5 @@ class Maze:
         new_rooms = [(x, y - 1), (x, y + 1), (x - 1, y), (x + 1, y)]
         possible_moves = [Move(direction, r) for direction, r, c in zip(self.DIRECTIONS, new_rooms, md5) if
                           direction in self.DIRECTIONS and c in self.OPEN_LETTERS and r[0] >= 0 and r[1] >= 0 and r[
-                              0] <= 4 and r[1] <= 4]
+                              0] < 4 and r[1] < 4]
         return possible_moves
