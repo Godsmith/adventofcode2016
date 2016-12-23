@@ -6,10 +6,6 @@ class TestLowestValidIp:
         b = Blacklist(['0-13', '18-23', '14-17'])
         assert b.lowest_valid_ip == 24
 
-    # def test_real_example(self):
-    #     b = Blacklist(['0-296167', '296168-338264', '356899-526908', '318586-356898', ])
-    #     assert b.lowest_valid_ip == 526909
-
     def test_example(self):
         b = Blacklist(['5-8', '0-2', '4-7'])
         assert b.lowest_valid_ip == 3
@@ -17,3 +13,15 @@ class TestLowestValidIp:
     def test_neighboring_ranges(self):
         b = Blacklist(['0-13', '14-17', '19-23'])
         assert b.lowest_valid_ip == 18
+
+
+class TestCountAllowedIps:
+    def test_standard(self):
+        b = Blacklist(['0-13', '14-17', '19-23'], highest_ip=23)
+        assert b.count_allowed_ips() == 1
+
+        b = Blacklist(['0-13', '14-17', '19-23'], highest_ip=24)
+        assert b.count_allowed_ips() == 2
+
+        b = Blacklist(['0-11', '14-17', '19-23'], highest_ip=24)
+        assert b.count_allowed_ips() == 4
