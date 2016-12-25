@@ -1,2 +1,0 @@
-class Cluster:
-    pass
