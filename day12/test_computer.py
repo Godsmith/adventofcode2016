@@ -11,3 +11,16 @@ def test_evaluate():
     computer = Computer()
     computer.evaluate(instructions)
     assert computer.register('a') == 42
+
+
+def test_evaluate_tgl():
+    instructions = [s.strip() for s in """cpy 2 a
+tgl a
+tgl a
+tgl a
+cpy 1 a
+dec a
+dec a""".split('\n')]
+    computer = Computer()
+    computer.evaluate(instructions)
+    assert computer.register('a') == 3
