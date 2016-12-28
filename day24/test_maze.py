@@ -28,8 +28,11 @@ def test_find_coordinates(maze1):
 def test_shortest(maze1):
     assert maze1.shortest_route_length(0, 1) == 2
     assert maze1.shortest_route_length(0, 3) == 10
-    #
-    # def test_shortest():
-    #     with open('input.txt') as f:
-    #         maze = [line[:-1] for line in f.readlines()]
-    #         assert Maze(maze).shortest_route_length(0, 1) == 22
+
+
+def test_special_characters(maze1):
+    assert maze1._special_characters == {'0', '1', '2', '3', '4'}
+
+
+def test_fewest_steps_to_visit_all(maze1):
+    assert maze1.fewest_steps_to_visit_all() == 14
