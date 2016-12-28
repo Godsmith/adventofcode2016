@@ -5,7 +5,7 @@ class Computer:
     def evaluate(self, instructions, instruction_index=0):
         while instruction_index < len(instructions):
             instruction = instructions[instruction_index]
-            print(self.registers, instruction)
+            # print(self.registers, instruction)
             list_ = instruction.split(' ')
             if list_[0] == 'cpy':
                 if list_[1] in self.registers:
@@ -26,7 +26,7 @@ class Computer:
                         value = 0
                 if value != 0:
                     if list_[2] in self.registers:
-                        instruction_index += self.registers[list_[2]]
+                        instruction_index += self.registers[list_[2]] - 1  # -1 due to always moves one step forward
                     else:
                         instruction_index += int(list_[2]) - 1  # -1 due to always moves one step forward
             elif list_[0] == 'tgl':
