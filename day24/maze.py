@@ -33,7 +33,7 @@ class Maze:
                 points_to_evaluate_next.update(neighboring_not_evaluated_not_wall_points)
             moves += 1
 
-    def fewest_steps_to_visit_all(self):
+    def fewest_steps_to_visit_all(self, and_return=False):
         route_lengths = {}
         special_characters = self._special_characters
         for start_character, end_character in combinations(special_characters, 2):
@@ -47,7 +47,10 @@ class Maze:
         for complete_route in complete_routes:
             routes = [(complete_route[i], complete_route[i + 1]) for i, _ in list(enumerate(complete_route))[:-1]]
             partial_route_lengths = [route_lengths[route] for route in routes]
-            complete_route_lengths.append(sum(partial_route_lengths))
+            route_length = sum(partial_route_lengths)
+            if and_return:
+                route_length += route_lengths[(complete_route[-1], '0')]
+            complete_route_lengths.append(route_length)
         return min(complete_route_lengths)
 
     @property
