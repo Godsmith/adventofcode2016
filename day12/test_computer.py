@@ -28,6 +28,9 @@ dec a""".split('\n')]
 
 def test_output():
     instructions = [s.strip() for s in """cpy 2 a
+out a
+dec a
 out a""".split('\n')]
     computer = Computer()
-    assert next(computer.output(instructions)) == 0
+    assert next(computer.output(instructions)) == 2
+    assert next(computer.output(instructions)) == 1

@@ -51,11 +51,15 @@ class Computer:
                         instructions[self.instruction_index + offset] = i.replace('jnz', 'cpy')
                     else:
                         instructions[self.instruction_index + offset] = 'jnz' + i[3:]
-                        # elif list_[0] == 'out':
-                        #     yield self.registers[list_[1]]
+        elif list_[0] == 'out':
+            return self.registers[list_[1]]
 
     def output(self, instructions):
-        pass
+        while True:
+            return_value = self.execute(instructions)
+            self.instruction_index += 1
+            if return_value is not None:
+                yield return_value
 
     def register(self, x):
         return self.registers[x]
