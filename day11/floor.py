@@ -47,3 +47,15 @@ class Floor:
 
     def including(self, objects):
         return Floor(self.id, self.objects.union(objects))
+
+    def translated(self, dict_):
+        new_set = {self._replace_all_in_dict(o, dict_) for o in self._set}
+        return Floor(self.id, new_set)
+
+    @staticmethod
+    def _replace_all_in_dict(s, dict_):
+        for old, new in dict_.items():
+            if old in s:
+                return s.replace(old, new)
+        else:
+            return s

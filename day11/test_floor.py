@@ -30,3 +30,8 @@ def test_eq():
 def test_without():
     floor = Floor('F1', {'HG', 'HM'})
     assert floor.without({'HG'}) == Floor('F1', {'HM'})
+
+
+def test_translated():
+    floor = Floor('F1', {'E', 'HG', 'HM', 'LM'})
+    assert floor.translated({'H': 'L', 'L': 'H'}) == Floor('F1', {'E', 'LG', 'LM', 'HM'})

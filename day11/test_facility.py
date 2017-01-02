@@ -124,10 +124,18 @@ def test_elements():
     assert facility._elements == ['H', 'L']
 
 
+def test_translated():
+    facility = Facility([{'HM', 'LM'},
+                         {'E', 'HG'},
+                         {'LG'},
+                         set()])
+    assert facility.translated({'H': 'L', 'L': 'H'}) == Facility([{'LM', 'HM'}, {'E', 'LG'}, {'HG'}, set()])
+
+
 def test_permutations():
     facility = Facility([{'HM', 'LM'},
                          {'E', 'HG'},
                          {'LG'},
                          set()])
 
-    assert facility.permutations == {facility, Facility([{'HG', 'LG'}, {'E', 'LG'}, {'HG'}])}
+    assert facility.permutations == {facility, Facility([{'HM', 'LM'}, {'E', 'LG'}, {'HG'}, set()])}

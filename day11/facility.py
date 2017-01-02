@@ -1,6 +1,5 @@
 from copy import deepcopy
-from itertools import chain
-from itertools import combinations
+from itertools import chain, combinations, permutations
 
 from day11.floor import Floor
 from day11.move import Move
@@ -76,7 +75,19 @@ class Facility:
 
     @property
     def permutations(self):
+        element_permutations = permutations(self._elements)
+        for element_permutation in element_permutations:
+            dict_ = {}
+            for original_element, new_element in zip(self._elements, element_permutation):
+                dict_[original_element] = new_element
+
         return None
+
+    def translated(self, dict_):
+        facility = deepcopy(self)
+        for i, floor in enumerate(self._floors):
+            facility._floors[i] = floor.translated(dict_)
+        return facility
 
     def _move(self, move: Move):
         self._floors[self._current_floor_index()] = self._current_floor().without(move.cargo.union({'E'}))
