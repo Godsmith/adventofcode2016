@@ -13,6 +13,13 @@ class Facility:
 
     def __init__(self, initial_state):
         self._floors = [Floor('F' + str(i), items) for i, items in enumerate(initial_state, start=1)]
+        elements = set()
+        for floor in initial_state:
+            for item in floor:
+                elements.add(item[0])
+        elements.remove('E')
+        self._elements = list(sorted(list(elements)))
+
 
     @classmethod
     def create(cls, initial_state):
@@ -67,6 +74,10 @@ class Facility:
                 if new_facility.is_legal() and new_facility not in excluded_states:
                     yield move
 
+    @property
+    def permutations(self):
+        return None
+
     def _move(self, move: Move):
         self._floors[self._current_floor_index()] = self._current_floor().without(move.cargo.union({'E'}))
         destination_floor_id = self._index_of_floor_with_id(move.destination_floor)
@@ -120,18 +131,3 @@ class Facility:
     def all_objects_on_fourth_floor(self):
         return sum([len(f) for f in self._floors[:3]]) == 0
 
-    @property
-    def _locations(self):
-        # Another way of representing the locations of the items
-        items = {}
-        types = set()
-        for floor in self._floors:
-            for item in floor.objects:
-                if item == 'E':
-                    locations = (int(floor.id[1]), set())  # here the output object is created
-                else:
-                    items[item] = int(floor.id[1])
-                    types.add(item[0])
-        for type in types:
-            locations[1].add((items[type + 'M'], items[type + 'G']))
-        return locations

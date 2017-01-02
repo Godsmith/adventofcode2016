@@ -116,31 +116,18 @@ def test_all_objects_on_fourth_floor():
     assert facility.all_objects_on_fourth_floor()
 
 
-def test_locations():
+def test_elements():
     facility = Facility([{'HM', 'LM'},
                          {'E', 'HG'},
                          {'LG'},
                          set()])
-    assert facility._locations == (2, {(1, 2), (1, 3)})
+    assert facility._elements == ['H', 'L']
 
-        # def test_equality():
-        #     facility = Facility([{'HM', 'LM'},
-        #                          {'E', 'HG'},
-        #                          {'LG'},
-        #                          set()])
-        #     facility2 = Facility([{'HM', 'LM'},
-        #                           {'E', 'HG'},
-        #                           {'LG'},
-        #                           set()])
-        #
-        #     assert facility == facility2
-        #
-        #     facility = Facility([{'HM', 'LM'},
-        #                          {'E', 'HG'},
-        #                          {'LG'},
-        #                          set()])
-        #     facility2 = Facility([{'LM', 'HM'},
-        #                           {'E', 'LG'},
-        #                           {'HG'},
-        #                           set()])
-        #     assert facility == facility2
+
+def test_permutations():
+    facility = Facility([{'HM', 'LM'},
+                         {'E', 'HG'},
+                         {'LG'},
+                         set()])
+
+    assert facility.permutations == {facility, Facility([{'HG', 'LG'}, {'E', 'LG'}, {'HG'}])}
