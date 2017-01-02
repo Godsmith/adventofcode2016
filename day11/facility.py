@@ -11,14 +11,14 @@ flatten = chain.from_iterable
 class Facility:
     floors = ['F1', 'F2', 'F3', 'F4']
 
-    def __init__(self, floors):
-        self._floors = floors
+    def __init__(self, initial_state):
+        self._floors = [Floor('F' + str(i), items) for i, items in enumerate(initial_state, start=1)]
 
     @classmethod
-    def create(cls, initial_floors, moves=None):
+    def create(cls, initial_state, moves=None):
         if moves is None:
             moves = []
-        facility = Facility(deepcopy(initial_floors))
+        facility = Facility(initial_state)
         for move in moves:
             facility._move(move)
         return facility
@@ -33,7 +33,7 @@ class Facility:
         return '\n'.join([str(floor) for floor in self._floors])
 
     def __hash__(self):
-        return hash(self.to_string())  #hash(tuple(self._floors))
+        return hash(self.to_string())  # hash(tuple(self._floors))
 
     def to_string(self):
         objects = sorted(flatten([floor.objects for floor in self._floors]))

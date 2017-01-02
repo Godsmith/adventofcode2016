@@ -1,4 +1,3 @@
-from day11.floor import Floor
 from day11.solver import Solver
 
 
@@ -10,17 +9,13 @@ from day11.solver import Solver
 #     assert solver.solve() == 37
 
 def test_solve_example():
-    solver = Solver(initial_state=[Floor('F1', {'E', 'HM', 'LM'}),
-                                   Floor('F2', {'HG'}),
-                                   Floor('F3', {'LG'}),
-                                   Floor('F4')])
+    solver = Solver(initial_state=[{'E', 'HM', 'LM'}, {'HG'}, {'LG'}, {}])
     assert solver.solve() == 11
 
 
 def test_solve_slower():
-    # 3s 981ms to 4s 295ms
-    solver = Solver(initial_state=[Floor('F1', {'E', 'HM', 'LM', 'SM'}),
-                                   Floor('F2', {'HG'}),
-                                   Floor('F3', {'LG', 'SG'}),
-                                   Floor('F4')])
+    # 3s 557ms to 4s 295ms
+    solver = Solver(initial_state=[{'E', 'HM', 'LM', 'SM'},
+                                   {'HG'},
+                                   {'LG', 'SG'}, {}])
     assert solver.solve() == 23

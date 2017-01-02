@@ -1,13 +1,9 @@
 from day11.facility import Facility
-from day11.floor import Floor
 from day11.move import Move
 
 
 def test_to_string():
-    facility = Facility([Floor('F1', {'E', 'HM', 'LM'}),
-                         Floor('F2', {'HG'}),
-                         Floor('F3', {'LG'}),
-                         Floor('F4')])
+    facility = Facility([{'E', 'HM', 'LM'}, {'HG'}, {'LG'}, set()])
     assert facility.to_string() == ("F4 .  .  .  .  .  \n"
                                     "F3 .  .  .  LG .  \n"
                                     "F2 .  HG .  .  .  \n"
@@ -15,22 +11,13 @@ def test_to_string():
 
 
 def test_legal():
-    facility = Facility([Floor('F1', {'E', 'HM', 'LM'}),
-                         Floor('F2', {'HG'}),
-                         Floor('F3', {'LG'}),
-                         Floor('F4')])
+    facility = Facility([{'E', 'HM', 'LM'}, {'HG'}, {'LG'}, set()])
     assert facility.is_legal()
 
-    facility = Facility([Floor('F1', {'E', 'HG', 'HM', 'LM'}),
-                         Floor('F2'),
-                         Floor('F3', {'LG'}),
-                         Floor('F4')])
+    facility = Facility([{'E', 'HG', 'HM', 'LM'}, set(), {'LG'}, set()])
     assert not facility.is_legal()
 
-    facility = Facility([Floor('F1', {'LM', 'LG', 'HG'}),
-                         Floor('F2', {'E', 'HM', }),
-                         Floor('F3', {'RG'}),
-                         Floor('F4')])
+    facility = Facility([{'LM', 'LG', 'HG'}, {'E', 'HM', }, {'RG'}, set()])
     assert facility.is_legal()
 
 
@@ -42,132 +29,125 @@ def test_combinations_of_objects():
 
 
 def test_combination_of_objects_on_current_floor():
-    facility = Facility([Floor('F1', {'E', 'HM', 'LM'}),
-                         Floor('F2', {'HG'}),
-                         Floor('F3', {'LG'}),
-                         Floor('F4')])
+    facility = Facility([{'E', 'HM', 'LM'}, {'HG'}, {'LG'}, set()])
     assert facility._combinations_of_objects_on_current_floor() == {frozenset(['HM']), frozenset(['LM']),
                                                                     frozenset(['HM', 'LM'])}
 
 
 def test_adjacent_floors():
-    facility = Facility([Floor('F1', {'E', 'HM', 'LM'}),
-                         Floor('F2', {'HG'}),
-                         Floor('F3', {'LG'}),
-                         Floor('F4')])
+    facility = Facility([{'E', 'HM', 'LM'},
+                         {'HG'},
+                         {'LG'},
+                         set()])
     assert facility._adjacent_floors() == {'F2'}
-    facility = Facility([Floor('F1', {'HM', 'LM'}),
-                         Floor('F2', {'E', 'HG'}),
-                         Floor('F3', {'LG'}),
-                         Floor('F4')])
+    facility = Facility([{'HM', 'LM'},
+                         {'E', 'HG'},
+                         {'LG'},
+                         set()])
     assert facility._adjacent_floors() == {'F1', 'F3'}
-    facility = Facility([Floor('F1', {'HM', 'LM'}),
-                         Floor('F2', {'HG'}),
-                         Floor('F3', {'LG'}),
-                         Floor('F4', {'E'})])
+    facility = Facility([{'HM', 'LM'},
+                         {'HG'},
+                         {'LG'},
+                         {'E'}])
     assert facility._adjacent_floors() == {'F3'}
 
 
 def test_create():
-    facility = Facility.create([Floor('F1', {'E', 'HM', 'LM'}),
-                                Floor('F2', {'HG'}),
-                                Floor('F3', {'LG'}),
-                                Floor('F4')], [Move('F2', {'HM', 'LM'})])
-    assert facility == Facility([Floor('F1'),
-                                 Floor('F2', {'E', 'HM', 'LM', 'HG'}),
-                                 Floor('F3', {'LG'}),
-                                 Floor('F4')])
+    facility = Facility.create([{'E', 'HM', 'LM'},
+                                {'HG'},
+                                {'LG'},
+                                {'HM', 'LM'}], [Move('F2', {'HM', 'LM'})])
+    assert facility == Facility([set(),
+                                 {'E', 'HM', 'LM', 'HG'},
+                                 {'LG'},
+                                 {'HM', 'LM'}])
 
 
 def test_possible_moves():
-    facility = Facility([Floor('F1', {'E', 'HM', 'LM'}),
-                         Floor('F2', {'HG'}),
-                         Floor('F3', {'LG'}),
-                         Floor('F4')])
+    facility = Facility([{'E', 'HM', 'LM'},
+                         {'HG'},
+                         {'LG'},
+                         set()])
     assert set(facility.possible_moves()) == {Move('F2', {'HM'})}
 
-    facility = Facility([Floor('F1', {'LM'}),
-                         Floor('F2', {'E', 'HG', 'HM', 'LG'}),
-                         Floor('F3', {'RG'}),
-                         Floor('F4')])
+    facility = Facility([{'LM'},
+                         {'E', 'HG', 'HM', 'LG'},
+                         {'RG'},
+                         set()])
     assert set(facility.possible_moves()) == {Move('F1', {'HM'}), Move('F1', {'LG'}), Move('F1', {'LG', 'HG'}),
                                               Move('F3', {'HG', 'HM'}), Move('F3', {'LG', 'HG'}), Move('F3', {'LG'})}
 
-    facility = Facility([Floor('F1', {'LM'}),
-                         Floor('F2', {'E', 'HG', 'HM', 'LG'}),
-                         Floor('F3', {'RG', 'RM'}),
-                         Floor('F4')])
-    excluded_facility = Facility([Floor('F1', {'E', 'LM', 'HM'}),
-                                  Floor('F2', {'HG', 'LG'}),
-                                  Floor('F3', {'RG', 'RM'}),
-                                  Floor('F4')])
+    facility = Facility([{'LM'},
+                         {'E', 'HG', 'HM', 'LG'},
+                         {'RG', 'RM'},
+                         set()])
+    excluded_facility = Facility([{'E', 'LM', 'HM'},
+                                  {'HG', 'LG'},
+                                  {'RG', 'RM'},
+                                  set()])
     assert set(facility.possible_moves(excluded_states={excluded_facility})) == {Move('F1', {'LG'}),
                                                                                  Move('F1', {'LG', 'HG'}),
                                                                                  Move('F3', {'HG', 'HM'}),
                                                                                  Move('F3', {'LG', 'HG'}),
                                                                                  Move('F3', {'LG'})}
 
+    def test_adjacent_states():
+        facility = Facility([{'E', 'HM', 'LM'},
+                             {'HG'},
+                             {'LG'},
+                             set()])
+        assert set(facility.adjacent_states()) == {
+            Facility([{'LM'},
+                      {'E', 'HG', 'HM'},
+                      {'LG'},
+                      set()])}
 
-def test_adjacent_states():
-    facility = Facility([Floor('F1', {'E', 'HM', 'LM'}),
-                         Floor('F2', {'HG'}),
-                         Floor('F3', {'LG'}),
-                         Floor('F4')])
-    assert set(facility.adjacent_states()) == {
-        Facility([Floor('F1', {'LM'}),
-                  Floor('F2', {'E', 'HG', 'HM'}),
-                  Floor('F3', {'LG'}),
-                  Floor('F4')])}
+    def test_is_up():
+        facility = Facility([{'HM', 'LM'},
+                             {'E', 'HG'},
+                             {'LG'},
+                             set()])
+        assert facility.is_up('F3')
+        assert not facility.is_up('F2')
+        assert not facility.is_up('F1')
 
+    def test_all_objects_on_fourth_floor():
+        facility = Facility([{'HM', 'LM'},
+                             {'E', 'HG'},
+                             {'LG'},
+                             set()])
+        assert not facility.all_objects_on_fourth_floor()
+        facility = Facility([set(),
+                             set(),
+                             set(),
+                             {'E', 'LG', 'LM'}])
+        assert facility.all_objects_on_fourth_floor()
 
-def test_is_up():
-    facility = Facility([Floor('F1', {'HM', 'LM'}),
-                         Floor('F2', {'E', 'HG'}),
-                         Floor('F3', {'LG'}),
-                         Floor('F4')])
-    assert facility.is_up('F3')
-    assert not facility.is_up('F2')
-    assert not facility.is_up('F1')
+    def test_locations():
+        facility = Facility([{'HM', 'LM'},
+                             {'E', 'HG'},
+                             {'LG'},
+                             set()])
+        assert facility._locations == (2, {(1, 2), (1, 3)})
 
-
-def test_all_objects_on_fourth_floor():
-    facility = Facility([Floor('F1', {'HM', 'LM'}),
-                         Floor('F2', {'E', 'HG'}),
-                         Floor('F3', {'LG'}),
-                         Floor('F4')])
-    assert not facility.all_objects_on_fourth_floor()
-    facility = Facility([Floor('F1'),
-                         Floor('F2'),
-                         Floor('F3'),
-                         Floor('F4', {'E', 'LG', 'LM'})])
-    assert facility.all_objects_on_fourth_floor()
-
-
-def test_locations():
-    facility = Facility([Floor('F1', {'HM', 'LM'}),
-                         Floor('F2', {'E', 'HG'}),
-                         Floor('F3', {'LG'}),
-                         Floor('F4')])
-    assert facility._locations == (2, {(1, 2), (1, 3)})
-
-# def test_equality():
-#     facility = Facility([Floor('F1', {'HM', 'LM'}),
-#                          Floor('F2', {'E', 'HG'}),
-#                          Floor('F3', {'LG'}),
-#                          Floor('F4')])
-#     facility2 = Facility([Floor('F1', {'HM', 'LM'}),
-#                           Floor('F2', {'E', 'HG'}),
-#                           Floor('F3', {'LG'}),
-#                           Floor('F4')])
-#
-#     assert facility == facility2
-#
-#     facility = Facility([Floor('F1', {'HM', 'LM'}),
-#                          Floor('F2', {'E', 'HG'}),
-#                          Floor('F3', {'LG'}),
-#                          Floor('F4')])
-#     facility2 = Facility([Floor('F1', {'LM', 'HM'}),
-#                           Floor('F2', {'E', 'LG'}),
-#                           Floor('F3', {'HG'}),
-#                           Floor('F4')])
-#     assert facility == facility2
+        # def test_equality():
+        #     facility = Facility([{'HM', 'LM'},
+        #                          {'E', 'HG'},
+        #                          {'LG'},
+        #                          set()])
+        #     facility2 = Facility([{'HM', 'LM'},
+        #                           {'E', 'HG'},
+        #                           {'LG'},
+        #                           set()])
+        #
+        #     assert facility == facility2
+        #
+        #     facility = Facility([{'HM', 'LM'},
+        #                          {'E', 'HG'},
+        #                          {'LG'},
+        #                          set()])
+        #     facility2 = Facility([{'LM', 'HM'},
+        #                           {'E', 'LG'},
+        #                           {'HG'},
+        #                           set()])
+        #     assert facility == facility2
