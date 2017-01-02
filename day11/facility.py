@@ -15,12 +15,8 @@ class Facility:
         self._floors = [Floor('F' + str(i), items) for i, items in enumerate(initial_state, start=1)]
 
     @classmethod
-    def create(cls, initial_state, moves=None):
-        if moves is None:
-            moves = []
+    def create(cls, initial_state):
         facility = Facility(initial_state)
-        for move in moves:
-            facility._move(move)
         return facility
 
     def __repr__(self):

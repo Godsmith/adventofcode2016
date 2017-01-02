@@ -52,17 +52,6 @@ def test_adjacent_floors():
     assert facility._adjacent_floors() == {'F3'}
 
 
-def test_create():
-    facility = Facility.create([{'E', 'HM', 'LM'},
-                                {'HG'},
-                                {'LG'},
-                                {'HM', 'LM'}], [Move('F2', {'HM', 'LM'})])
-    assert facility == Facility([set(),
-                                 {'E', 'HM', 'LM', 'HG'},
-                                 {'LG'},
-                                 {'HM', 'LM'}])
-
-
 def test_possible_moves():
     facility = Facility([{'E', 'HM', 'LM'},
                          {'HG'},
