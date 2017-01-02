@@ -24,3 +24,10 @@ dec a""".split('\n')]
     computer = Computer()
     computer.evaluate(instructions)
     assert computer.register('a') == 3
+
+
+def test_output():
+    instructions = [s.strip() for s in """cpy 2 a
+out a""".split('\n')]
+    computer = Computer()
+    assert next(computer.output(instructions)) == 0
