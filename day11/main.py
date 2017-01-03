@@ -1,4 +1,3 @@
-from day11.floor import Floor
 from day11.solver import Solver
 
 
@@ -7,14 +6,14 @@ class NoGoodMovesException(Exception):
 
 
 def main():
-    initial_state = [Floor('F1', {'E', 'SG', 'SM', 'PG', 'PM'}),
-                     Floor('F2', {'TG', 'RG', 'RM', 'CG', 'CM'}),
-                     Floor('F3', {'TM'}),
-                     Floor('F4')]
-    # initial_state = [Floor('F1', {'E', 'EG', 'EM', 'DG', 'DM', 'SG', 'SM', 'PG', 'PM'}),
-    #                  Floor('F2', {'TG', 'RG', 'RM', 'CG', 'CM'}),
-    #                  Floor('F3', {'TM'}),
-    #                  Floor('F4')]
+    initial_state = [{'E', 'SG', 'SM', 'PG', 'PM'},
+                     {'TG', 'RG', 'RM', 'CG', 'CM'},
+                     {'TM'},
+                     set()]
+    initial_state = [{'E', 'EG', 'EM', 'DG', 'DM', 'SG', 'SM', 'PG', 'PM'},
+                     {'TG', 'RG', 'RM', 'CG', 'CM'},
+                     {'TM'},
+                     set()]
 
     print(Solver(initial_state).solve())
 
