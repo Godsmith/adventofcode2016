@@ -38,5 +38,3 @@ class AcrossElfCircle(ElfCircle):
         return elves[:opposite_index] + elves[opposite_index + 1:]
 
 
-# print(ElfCircle(3005290).winning_elf)
-print(AcrossElfCircle(3005290).winning_elf)

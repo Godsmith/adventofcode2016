@@ -10,3 +10,4 @@ def test_winning_elf():
 
 def test_across_circle_winning_elf():
     assert AcrossElfCircle(5).winning_elf == 2
+    assert AcrossElfCircle(397).winning_elf == 154
