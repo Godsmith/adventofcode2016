@@ -1,4 +1,4 @@
-from day13.day13 import location
+from day13.location import location
 
 
 def test_location():
