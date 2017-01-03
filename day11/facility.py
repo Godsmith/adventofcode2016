@@ -19,7 +19,6 @@ class Facility:
         elements.remove('E')
         self._elements = list(sorted(list(elements)))
 
-
     @classmethod
     def create(cls, initial_state):
         facility = Facility(initial_state)
@@ -80,8 +79,7 @@ class Facility:
             dict_ = {}
             for original_element, new_element in zip(self._elements, element_permutation):
                 dict_[original_element] = new_element
-
-        return None
+            yield self.translated(dict_)
 
     def translated(self, dict_):
         facility = deepcopy(self)
@@ -141,4 +139,3 @@ class Facility:
 
     def all_objects_on_fourth_floor(self):
         return sum([len(f) for f in self._floors[:3]]) == 0
-

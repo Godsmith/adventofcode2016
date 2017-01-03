@@ -138,4 +138,4 @@ def test_permutations():
                          {'LG'},
                          set()])
 
-    assert facility.permutations == {facility, Facility([{'HM', 'LM'}, {'E', 'LG'}, {'HG'}, set()])}
+    assert set(facility.permutations) == {facility, Facility([{'HM', 'LM'}, {'E', 'LG'}, {'HG'}, set()])}
