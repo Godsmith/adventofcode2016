@@ -14,7 +14,7 @@ def test_solve_example():
 
 
 def test_solve_slower():
-    # 3s 557ms to 4s 295ms
+    # 2s 382ms to 3s 427 ms
     solver = Solver(initial_state=[{'E', 'HM', 'LM', 'SM'},
                                    {'HG'},
                                    {'LG', 'SG'}, {}])

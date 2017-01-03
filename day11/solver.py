@@ -23,6 +23,6 @@ class Solver:
                     return moves
                 adjacent_states_to_current_facility = facility.adjacent_states()
                 facilities_to_evaluate_next_step.extend(adjacent_states_to_current_facility)
-                evaluated_facilities.add(facility)
+                evaluated_facilities.update(facility.permutations)
 
             moves += 1
