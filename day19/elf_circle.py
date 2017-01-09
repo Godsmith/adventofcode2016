@@ -32,6 +32,18 @@ class AcrossElfCircle(ElfCircle):
                     elves = self._remove_opposite(elf, elves)
         return elves[0]
 
+    @property
+    def winning_elf2(self):
+        elves = list(range(1, self._n + 1))
+        elf_count = self._n
+        while elf_count > 1:
+            print(elf_count)
+            opposite_index = (math.floor(elf_count / 2))
+            elves = elves[:opposite_index] + elves[opposite_index + 1:]
+            elves = elves[1:] + [elves[0]]
+            elf_count -= 1
+        return elves[0]
+
     # @staticmethod
     # def indices_to_remove(elf_count, first_elf_gets_to_act):
     #     acting_elf_index = 0
@@ -40,25 +52,25 @@ class AcrossElfCircle(ElfCircle):
     #     while acting_elf_index < elf_count:
     #         opposite_index = (acting_elf_index + math.floor(elf_count) / 2) % elf_count
 
-    @staticmethod
-    def _offsets_from_living_list(self, living_list):
-        pass
-
-    @staticmethod
-    def _opposite_index(index, count, is_living=None):
-        if is_living is None:
-            is_living = [True] * count
-        opposite_index_before_offset = (index + math.floor(count / 2)) % count
-        dead_up_to_current_index = is_living[:opposite_index_before_offset + 1].count(False)
-        last_index = opposite_index_before_offset
-        current_index = opposite_index_before_offset + dead_up_to_current_index
-        while True:
-            change_in_offset_since_last_index = AcrossElfCircle._count_dead(is_living, last_index, current_index, count)
-            if change_in_offset_since_last_index == 0:
-                return current_index % count
-            else:
-                last_index = current_index
-                current_index += change_in_offset_since_last_index
+    # @staticmethod
+    # def _offsets_from_living_list(self, living_list):
+    #     pass
+    #
+    # @staticmethod
+    # def _opposite_index(index, count, is_living=None):
+    #     if is_living is None:
+    #         is_living = [True] * count
+    #     opposite_index_before_offset = (index + math.floor(count / 2)) % count
+    #     dead_up_to_current_index = is_living[:opposite_index_before_offset + 1].count(False)
+    #     last_index = opposite_index_before_offset
+    #     current_index = opposite_index_before_offset + dead_up_to_current_index
+    #     while True:
+    #         change_in_offset_since_last_index = AcrossElfCircle._count_dead(is_living, last_index, current_index, count)
+    #         if change_in_offset_since_last_index == 0:
+    #             return current_index % count
+    #         else:
+    #             last_index = current_index
+    #             current_index += change_in_offset_since_last_index
 
     @staticmethod
     def _count_dead(is_living, starting_index, offset, count):
