@@ -35,6 +35,8 @@ class LinkedList:
                 node.next = node.next.next
             except AttributeError:
                 raise IndexError("Index %s does not exist")
+            if node.next is None:
+                self.last = node
 
     def rotate(self):
         old_first = self.first

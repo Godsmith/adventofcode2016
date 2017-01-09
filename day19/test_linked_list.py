@@ -18,16 +18,23 @@ class TestRemove:
         linked = LinkedList([1, 2, 3, 4, 5])
         linked.remove(0)
         assert str(linked) == "[2, 3, 4, 5]"
+        assert linked.first.value == 2
 
     def test_end(self):
         linked = LinkedList([1, 2, 3, 4, 5])
         linked.remove(4)
         assert str(linked) == "[1, 2, 3, 4]"
+        assert linked.last.value == 4
 
     def test_outside(self):
         linked = LinkedList([1, 2, 3, 4, 5])
         with pytest.raises(IndexError):
             linked.remove(5)
+
+    def test_remove_down_to_one(self):
+        linked = LinkedList([1, 2])
+        linked.remove(1)
+        assert linked.first.value == linked.last.value == 1
 
 
 def test_rotate():
