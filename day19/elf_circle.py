@@ -1,5 +1,7 @@
 import math
 
+from day19.linked_list import LinkedList
+
 
 class ElfCircle:
     def __init__(self, n):
@@ -43,6 +45,18 @@ class AcrossElfCircle(ElfCircle):
             elves = elves[1:] + [elves[0]]
             elf_count -= 1
         return elves[0]
+
+    @property
+    def winning_elf3(self):
+        elves = LinkedList(list(range(1, self._n + 1)))
+        elf_count = self._n
+        while elf_count > 1:
+            print(elf_count)
+            opposite_index = (math.floor(elf_count / 2))
+            elves.remove(opposite_index)
+            elves.rotate()
+            elf_count -= 1
+        return elves.first.value
 
     # @staticmethod
     # def indices_to_remove(elf_count, first_elf_gets_to_act):

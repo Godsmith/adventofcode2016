@@ -18,6 +18,10 @@ def test_across_circle_winning_elf2():
     assert AcrossElfCircle(397).winning_elf2 == 154
 
 
+def test_across_circle_winning_elf3():
+    assert AcrossElfCircle(5).winning_elf3 == 2
+    assert AcrossElfCircle(397).winning_elf3 == 154
+
 # def test_indices_to_remove():
 #     assert AcrossElfCircle.indices_to_remove(5, True) == {2, 4, 0}
 

@@ -37,11 +37,30 @@ class TestRemove:
         assert linked.first.value == linked.last.value == 1
 
 
-def test_rotate():
-    linked = LinkedList([1, 2, 3, 4, 5])
-    assert linked.first.value == 1
-    assert linked.last.value == 5
-    linked.rotate()
-    assert str(linked) == "[2, 3, 4, 5, 1]"
-    assert linked.first.value == 2
-    assert linked.last.value == 1
+class TestRotate():
+    def test_simple(self):
+        linked = LinkedList([1, 2, 3, 4, 5])
+        assert linked.first.value == 1
+        assert linked.last.value == 5
+        linked.rotate()
+        assert str(linked) == "[2, 3, 4, 5, 1]"
+        assert linked.first.value == 2
+        assert linked.last.value == 1
+
+    def test_length_2(self):
+        linked = LinkedList([1, 2])
+        assert linked.first.value == 1
+        assert linked.last.value == 2
+        linked.rotate()
+        assert str(linked) == "[2, 1]"
+        assert linked.first.value == 2
+        assert linked.last.value == 1
+
+    def test_length_1(self):
+        linked = LinkedList([1])
+        assert linked.first.value == 1
+        assert linked.last.value == 1
+        linked.rotate()
+        assert str(linked) == "[1]"
+        assert linked.first.value == 1
+        assert linked.last.value == 1

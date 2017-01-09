@@ -39,6 +39,8 @@ class LinkedList:
                 self.last = node
 
     def rotate(self):
+        if self.first == self.last:
+            return
         old_first = self.first
         self.first = old_first.next
         old_first.next = None
