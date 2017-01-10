@@ -13,3 +13,4 @@ with open('input.txt') as f:
     # print(viable_pairs)
     grid = Grid(nodes)
     print(grid)
+    print(list(grid.available_moves()))

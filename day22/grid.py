@@ -1,3 +1,5 @@
+from day22.node import Node
+
 class Grid:
     def __init__(self, nodes):
         self.width = 0
@@ -26,3 +28,9 @@ class Grid:
 
     def get_node(self, x, y):
         return self._nodes[(x, y)]
+
+    def available_moves(self):
+        for node in self._nodes.values():
+            for node2 in self._adjacent_nodes(node):
+                if Node.viable_pair(node, node2):
+                    yield (node, node2)
