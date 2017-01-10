@@ -58,6 +58,14 @@ class AcrossElfCircle(ElfCircle):
             elf_count -= 1
         return elves.first.value
 
+    @property
+    def winning_elf4(self):
+        elves = LinkedList(list(range(1, self._n + 1)))
+        while elves.length > 1:
+            print(elves.length)
+            elves.remove_opposite_and_rotate()
+        return elves.first.value
+
     # @staticmethod
     # def indices_to_remove(elf_count, first_elf_gets_to_act):
     #     acting_elf_index = 0

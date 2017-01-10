@@ -51,9 +51,14 @@ class LinkedList:
         self.first = self.first.next
 
     def remove_opposite_and_rotate(self):
-        self.opposite_first.previous.next = self.opposite_first.next
-        self.opposite_first.next.previous = self.opposite_first.previous
+        old_opposite_first = self.opposite_first
+        old_opposite_first.previous.next = old_opposite_first.next
+        old_opposite_first.next.previous = old_opposite_first.previous
+
+        if self.length % 2 == 0:
+            self.opposite_first = old_opposite_first.next
+        else:
+            self.opposite_first = old_opposite_first.next.next
+
         self.length -= 1
         self.rotate()
-        if self.length % 2 == 1:
-            self.opposite_first = self.opposite_first.next
