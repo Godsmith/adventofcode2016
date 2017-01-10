@@ -1,5 +1,6 @@
 from day22.grid import Grid
 from day22.node import Node
+from day22.solver import Solver
 
 with open('input.txt') as f:
     lines = [line[:-1] for line in f.readlines() if len(line) > 0][2:]
@@ -12,5 +13,5 @@ with open('input.txt') as f:
     #
     # print(viable_pairs)
     grid = Grid(nodes)
-    print(grid)
-    print(list(grid.available_moves()))
+    solver = Solver(grid)
+    print(solver.fewest_amount_of_steps())
