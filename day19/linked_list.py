@@ -22,39 +22,33 @@ class LinkedList:
 
             if i == math.floor(self.length / 2):
                 self.opposite_first = node
-        self.last = node
+        node.next = self.first
+        self.first.previous = node
 
     def __str__(self):
         list_ = []
         node = self.first
-        while node.next is not None:
+        while node.next is not self.first:
             list_.append(node.value)
             node = node.next
         list_.append(node.value)
         return str(list_)
 
     def remove(self, index):
-        if index == 0:
-            self.first = self.first.next
-        else:
+        if index > 0:
             node = self.first
-            for _ in range(index - 1):
-                node = node.next
-            try:
-                node.next = node.next.next
-            except AttributeError:
-                raise IndexError("Index %s does not exist")
-            if node.next is None:
-                self.last = node
+        else:
+            node = self.first.previous
+            self.first = self.first.next
+        for _ in range(index - 1):
+            node = node.next
+        node.next = node.next.next
+        node.next.next.previous = node
 
     def rotate(self):
-        if self.first == self.last:
-            return
-        old_first = self.first
-        self.first = old_first.next
-        old_first.next = None
-        self.last.next = old_first
-        self.last = old_first
+        # if self.length == 1:
+        #     return
+        self.first = self.first.next
 
     def remove_opposite_and_rotate(self):
         self.opposite_first.previous.next = self.opposite_first.next
