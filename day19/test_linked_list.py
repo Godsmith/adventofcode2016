@@ -64,3 +64,18 @@ class TestRotate():
         assert str(linked) == "[1]"
         assert linked.first.value == 1
         assert linked.last.value == 1
+
+
+def test_opposite_first():
+    linked = LinkedList([1, 2, 3, 4, 5])
+    assert linked.opposite_first.value == 3
+
+
+def test_remove_opposite_and_rotate():
+    linked = LinkedList([1, 2, 3, 4, 5])
+    linked.remove_opposite_and_rotate()
+    assert str(linked) == '[2, 4, 5, 1]'
+    assert linked.opposite_first.value == 5
+    linked.remove_opposite_and_rotate()
+    assert str(linked) == '[4, 1, 2]'
+    assert linked.opposite_first.value == 1

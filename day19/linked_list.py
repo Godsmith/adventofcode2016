@@ -1,18 +1,27 @@
+import math
+
+
 class LinkedList:
     class Node:
         def __init__(self, value):
             self.value = value
             self.next = None
+            self.previous = None
 
     def __init__(self, values):
         previous_node = None
-        for value in values:
+        self.length = len(list(values))
+        for i, value in enumerate(values):
             node = LinkedList.Node(value)
             if previous_node is None:
                 self.first = node
             else:
                 previous_node.next = node
+            node.previous = previous_node
             previous_node = node
+
+            if i == math.floor(self.length / 2):
+                self.opposite_first = node
         self.last = node
 
     def __str__(self):
@@ -46,3 +55,11 @@ class LinkedList:
         old_first.next = None
         self.last.next = old_first
         self.last = old_first
+
+    def remove_opposite_and_rotate(self):
+        self.opposite_first.previous.next = self.opposite_first.next
+        self.opposite_first.next.previous = self.opposite_first.previous
+        self.length -= 1
+        self.rotate()
+        if self.length % 2 == 1:
+            self.opposite_first = self.opposite_first.next
